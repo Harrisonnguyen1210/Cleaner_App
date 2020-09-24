@@ -1,6 +1,7 @@
 class Room {
-  final String floorId, roomId, movHeatmap, dirtHeatmap;
-  final double dirtIndex;
+  final String floorId, roomId, movHeatmap;
+  final List<dynamic> dirtHeatmap;
+  final double contaminationIndex;
   final int lastUpdate;
   final int lastCleaned;
   final bool isCleaning;
@@ -10,7 +11,7 @@ class Room {
         this.roomId,
         this.movHeatmap,
         this.dirtHeatmap,
-        this.dirtIndex,
+        this.contaminationIndex,
         this.isCleaning,
         this.lastCleaned,
         this.lastUpdate});
@@ -19,9 +20,8 @@ class Room {
     return Room(
       floorId: json['floor_id'],
       roomId: json['room_id'],
-      dirtIndex: json['dirt_index'],
-      dirtHeatmap: json['dirt_heatmap'],
-      movHeatmap: json['mov_heatmap'],
+      contaminationIndex: json['contamination_index'],
+      dirtHeatmap: json['between_cleaning_plot'],
       lastUpdate: json['last_update'],
       lastCleaned: json['last_cleaned'],
       isCleaning: json['is_cleaning'],

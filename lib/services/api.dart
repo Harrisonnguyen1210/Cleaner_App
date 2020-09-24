@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cleaner_app/models/room.dart';
@@ -11,7 +12,6 @@ final auth = 'zL43mXgXk5xa7YFRBVZscbLnGFaqVh24q5G6fhGjmAv532FAVBRtnuCJpwXWXnhw';
 
 Future<List<Room>> fetchRooms() async {
   final response = await getOp('rooms');
-
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
@@ -21,7 +21,6 @@ Future<List<Room>> fetchRooms() async {
           (dynamic item) => Room.fromJson(item),
     )
         .toList();
-
     return rooms;
   } else {
     // If the server did not return a 200 OK response,

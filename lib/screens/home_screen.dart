@@ -38,6 +38,8 @@ class _HomeScreenState extends State {
                       )
                       .toList(),
                 );
+              } else if (snapshot.hasError) {
+                return throw Exception(snapshot.error);
               } else {
                 return Center(child: CircularProgressIndicator());
               }
