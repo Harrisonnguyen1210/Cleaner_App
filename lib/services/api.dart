@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:cleaner_app/models/room.dart';
 import 'package:http/http.dart' as http;
-
 
 final endpoint = 'https://cleaner-app-api.azurewebsites.net/api/hospital0/';
 final auth = 'zL43mXgXk5xa7YFRBVZscbLnGFaqVh24q5G6fhGjmAv532FAVBRtnuCJpwXWXnhw';
@@ -19,7 +17,7 @@ Future<List<Room>> fetchRooms() async {
     List<Room> rooms = body
         .map(
           (dynamic item) => Room.fromJson(item),
-    )
+        )
         .toList();
     return rooms;
   } else {
@@ -29,12 +27,9 @@ Future<List<Room>> fetchRooms() async {
   }
 }
 
-Future<http.Response> getOp( String url) {
+Future<http.Response> getOp(String url) {
   return http.get(
     endpoint + url,
-    headers: {
-      HttpHeaders.authorizationHeader:
-      auth
-    },
+    headers: {HttpHeaders.authorizationHeader: auth},
   );
 }

@@ -1,49 +1,54 @@
-import 'package:cleaner_app/models/room.dart';
-import 'package:cleaner_app/services/api.dart';
+import 'package:cleaner_app/route_names.dart';
 import 'package:flutter/material.dart';
+import 'package:cleaner_app/screens/screens.dart';
+import 'package:cleaner_app/widgets/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key key}) : super(key: key);
-
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _HomeScreeenState createState() => _HomeScreeenState();
 }
 
-class _HomeScreenState extends State {
-  Future<List<Room>> futureRooms;
-
-  @override
-  void initState() {
-    super.initState();
-    futureRooms = fetchRooms();
-  }
+class _HomeScreeenState extends State<HomeScreen> {
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: FutureBuilder<List<Room>>(
-            future: futureRooms,
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Room>> snapshot) {
-              if (snapshot.hasData) {
-                List<Room> posts = snapshot.data;
-                return ListView(
-                  children: posts
-                      .map(
-                        (Room room) => ListTile(
-                          title: Text(room.roomId),
-                          subtitle: Text("${room.floorId}"),
+    final bool displayTabletLayout = MediaQuery.of(context).size.width > 500;
+
+    return SafeArea(
+      child: Row(
+        children: [
+          if (displayTabletLayout) AppDrawer(navigatorKey: navigatorKey),
+          Expanded(
+            child: Navigator(
+              key: navigatorKey,
+              initialRoute: RouteNames.overview,
+              onGenerateRoute: (RouteSettings settings) {
+                switch (settings.name) {
+                  case RouteNames.overview:
+                    return MaterialPageRoute(
+                        builder: (context) => OverviewScreen());
+                    break;
+                  case RouteNames.profile:
+                    return MaterialPageRoute(
+                        builder: (context) => ProfileScreen());
+                  case RouteNames.report:
+                    return MaterialPageRoute(
+                        builder: (context) => ReportScreen());
+                    break;
+                  default:
+                    return MaterialPageRoute(
+                      builder: (context) => Scaffold(
+                        body: Center(
+                          child: Text('Error loading screen'),
                         ),
-                      )
-                      .toList(),
-                );
-              } else if (snapshot.hasError) {
-                return throw Exception(snapshot.error);
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
-            }),
+                      ),
+                    );
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

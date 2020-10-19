@@ -1,3 +1,4 @@
+import 'package:cleaner_app/helpers/custom_page_transition_builder.dart';
 import 'package:cleaner_app/screens/screens.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        pageTransitionsTheme: PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: CustomPageTransitionBuilder(),
+            TargetPlatform.iOS: CustomPageTransitionBuilder(),
+          },
+        ),
       ),
       home: HomeScreen(),
     );
