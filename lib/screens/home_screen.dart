@@ -37,13 +37,7 @@ class _HomeScreeenState extends State<HomeScreen> {
                         builder: (context) => ReportScreen());
                     break;
                   default:
-                    return MaterialPageRoute(
-                      builder: (context) => Scaffold(
-                        body: Center(
-                          child: Text('Error loading screen'),
-                        ),
-                      ),
-                    );
+                    return null;
                 }
               },
             ),
