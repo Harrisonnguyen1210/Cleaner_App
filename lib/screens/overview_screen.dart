@@ -51,7 +51,7 @@ class OverviewScreen extends StatelessWidget {
                     TextSpan(
                         text: 'Welcome back ',
                         style: TextStyle(
-                          color: Consts.grey,
+                          color: Consts.textGrey,
                           fontSize: 20,
                         )),
                     TextSpan(
@@ -66,8 +66,10 @@ class OverviewScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 32,),
+            SizedBox(height: 32),
             SelectDropDownRow(),
+            SizedBox(height: 32),
+            RoomTable()
           ],
         ),
       ),

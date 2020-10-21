@@ -6,5 +6,9 @@ class Consts {
   static const secondaryBlack = Color(0xff2C353C);
   static const white = Colors.white;
   static const blackLight = Color(0xff51585E);
-  static const grey = Color(0xff828282);
+  static const textGrey = Color(0xff828282);
+  static const grey6 = Color(0xffF2F2F2);
+  static const greenIndex = Color(0xff28AE60);
+  static const yellowIndex = Color(0xffF2C94C);
+  static const redIndex = Color(0xffEB5756);
 }

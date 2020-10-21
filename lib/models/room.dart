@@ -1,30 +1,30 @@
+import 'package:cleaner_app/consts.dart';
+import 'package:flutter/material.dart';
+
 class Room {
-  final String floorId, roomId, movHeatmap;
-  final List<dynamic> dirtHeatmap;
-  final double contaminationIndex;
-  final int lastUpdate;
-  final int lastCleaned;
+  final String id, name, floor, building, hospitalId, roomType;
   final bool isCleaning;
+  final num contaminationIndex;
+  final int lastCleaned;
 
-  Room(
-      {this.floorId,
-        this.roomId,
-        this.movHeatmap,
-        this.dirtHeatmap,
-        this.contaminationIndex,
-        this.isCleaning,
-        this.lastCleaned,
-        this.lastUpdate});
+  Room({
+    @required this.id,
+    @required this.name,
+    @required this.floor,
+    @required this.building,
+    @required this.hospitalId,
+    @required this.isCleaning,
+    @required this.contaminationIndex,
+    this.roomType,
+    this.lastCleaned,
+  });
 
-  factory Room.fromJson(Map<String, dynamic> json) {
-    return Room(
-      floorId: json['floor_id'],
-      roomId: json['room_id'],
-      contaminationIndex: json['contamination_index'],
-      dirtHeatmap: json['between_cleaning_plot'],
-      lastUpdate: json['last_update'],
-      lastCleaned: json['last_cleaned'],
-      isCleaning: json['is_cleaning'],
-    );
+  Color get contaminationColor {
+    if (contaminationIndex <= 100)
+      return Consts.greenIndex;
+    else if (contaminationIndex > 100 && contaminationIndex < 200)
+      return Consts.yellowIndex;
+    else
+      return Consts.redIndex;
   }
 }
