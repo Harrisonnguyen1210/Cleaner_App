@@ -1,20 +1,12 @@
 import 'package:cleaner_app/consts.dart';
+import 'package:cleaner_app/providers/drawer_state_provider.dart';
 import 'package:cleaner_app/route_names.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class AppDrawer extends StatefulWidget {
+class AppDrawer extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey;
-
-  const AppDrawer({Key key, this.navigatorKey}) : super(key: key);
-
-  @override
-  _AppDrawerState createState() => _AppDrawerState();
-}
-
-class _AppDrawerState extends State<AppDrawer> {
-  int _selectedIndex = 0;
-
-  final _drawerItemData = [
+  final _drawerItemData = const [
     {
       'icon': Icons.desktop_windows,
       'title': 'OVERVIEW',
@@ -31,31 +23,29 @@ class _AppDrawerState extends State<AppDrawer> {
       'route': RouteNames.report,
     },
   ];
+  AppDrawer({Key key, this.navigatorKey}) : super(key: key);
 
-  void _onSelectedItem(int index) {
-    setState(() {
-      _selectedIndex = index;
-      widget.navigatorKey.currentState
-          .pushReplacementNamed(_drawerItemData[index]['route']);
-    });
-  }
-
-  Widget _buildDrawerItem(int index) {
+  Widget _buildDrawerItem(int index, DrawerStateProvider drawerStateProvider) {
     return Container(
-      color:
-          _selectedIndex == index ? Consts.primaryBlue : Consts.secondaryBlack,
+      color: drawerStateProvider.getCurrentDrawer == index
+          ? Consts.primaryBlue
+          : Consts.secondaryBlack,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () => _onSelectedItem(index),
+          onTap: () {
+            drawerStateProvider.setCurrentDrawer(index);
+            navigatorKey.currentState.pushNamedAndRemoveUntil(
+                _drawerItemData[index]['route'], (_) => false);
+          },
           child: Container(
             height: 80,
             child: Center(
               child: ListTile(
-                selected: _selectedIndex == index,
+                selected: drawerStateProvider.getCurrentDrawer == index,
                 leading: Icon(
                   _drawerItemData[index]['icon'],
-                  color: _selectedIndex == index
+                  color: drawerStateProvider.getCurrentDrawer == index
                       ? Consts.white
                       : Consts.primaryBlue,
                 ),
@@ -73,6 +63,7 @@ class _AppDrawerState extends State<AppDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    final drawerStateProvider = Provider.of<DrawerStateProvider>(context);
     return Drawer(
       child: Container(
         color: Consts.secondaryBlack,
@@ -96,7 +87,8 @@ class _AppDrawerState extends State<AppDrawer> {
             ..._drawerItemData
                 .asMap()
                 .entries
-                .map((mapEntry) => _buildDrawerItem(mapEntry.key))
+                .map((mapEntry) =>
+                    _buildDrawerItem(mapEntry.key, drawerStateProvider))
                 .toList()
           ],
         ),

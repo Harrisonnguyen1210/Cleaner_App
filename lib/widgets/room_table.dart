@@ -1,5 +1,6 @@
 import 'package:cleaner_app/consts.dart';
 import 'package:cleaner_app/data/data.dart';
+import 'package:cleaner_app/route_names.dart';
 import 'package:flutter/material.dart';
 
 class RoomTable extends StatefulWidget {
@@ -10,7 +11,6 @@ class RoomTable extends StatefulWidget {
 class _RoomTableState extends State<RoomTable> {
   List<bool> selected =
       List<bool>.generate(assignedRooms.length, (index) => false);
-  bool sort;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +80,10 @@ class _RoomTableState extends State<RoomTable> {
                             style: TextStyle(color: Consts.primaryBlue),
                           ),
                           color: Consts.white,
-                          onPressed: () {})
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(RouteNames.cleaning, arguments: assignedRooms[index]);
+                          })
                       : SizedBox(width: 88.0),
                 )
               ],

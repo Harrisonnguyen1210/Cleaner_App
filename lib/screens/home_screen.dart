@@ -1,4 +1,5 @@
 import 'package:cleaner_app/route_names.dart';
+import 'package:cleaner_app/screens/cleaning_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cleaner_app/screens/screens.dart';
 import 'package:cleaner_app/widgets/widgets.dart';
@@ -27,14 +28,19 @@ class _HomeScreeenState extends State<HomeScreen> {
                 switch (settings.name) {
                   case RouteNames.overview:
                     return MaterialPageRoute(
-                        builder: (context) => OverviewScreen());
+                        builder: (context) => OverviewScreen(), settings: settings);
+                    break;
+                  case RouteNames.cleaning:
+                    return MaterialPageRoute(
+                        builder: (context) => CleaningScreen(), settings: settings);
                     break;
                   case RouteNames.profile:
                     return MaterialPageRoute(
-                        builder: (context) => ProfileScreen());
+                        builder: (context) => ProfileScreen(), settings: settings);
+                    break;
                   case RouteNames.report:
                     return MaterialPageRoute(
-                        builder: (context) => ReportScreen());
+                        builder: (context) => ReportScreen(), settings: settings);
                     break;
                   default:
                     return null;

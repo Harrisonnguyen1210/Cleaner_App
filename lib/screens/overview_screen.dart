@@ -2,15 +2,16 @@ import 'package:cleaner_app/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:cleaner_app/widgets/widgets.dart';
 
+import '../widgets/widgets.dart';
+
 class OverviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool displayTabletLayout = MediaQuery.of(context).size.width > 500;
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: Container(
+      appBar: CustomAppBar.getAppBar(
+        Container(
           width: 220,
           height: 50,
           margin: EdgeInsets.only(left: 32),
@@ -28,8 +29,6 @@ class OverviewScreen extends StatelessWidget {
             ],
           ),
         ),
-        backgroundColor: Consts.blackLight,
-        toolbarHeight: 80,
       ),
       body: Container(
         width: double.infinity,

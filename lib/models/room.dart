@@ -2,7 +2,7 @@ import 'package:cleaner_app/consts.dart';
 import 'package:flutter/material.dart';
 
 class Room {
-  final String id, name, floor, building, hospitalId, roomType;
+  final String id, name, floor, building, hospital, roomType, patient;
   final bool isCleaning;
   final num contaminationIndex;
   final int lastCleaned;
@@ -12,9 +12,10 @@ class Room {
     @required this.name,
     @required this.floor,
     @required this.building,
-    @required this.hospitalId,
+    @required this.hospital,
     @required this.isCleaning,
     @required this.contaminationIndex,
+    @required this.patient,
     this.roomType,
     this.lastCleaned,
   });
@@ -26,5 +27,10 @@ class Room {
       return Consts.yellowIndex;
     else
       return Consts.redIndex;
+  }
+
+  String get patientNumber {
+    if(patient == '<empty>') return '0';
+    else return patient;
   }
 }
