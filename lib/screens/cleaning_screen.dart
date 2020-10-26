@@ -1,6 +1,3 @@
-import 'package:cleaner_app/consts.dart';
-import 'package:cleaner_app/widgets/button_cleaning.dart';
-import 'package:cleaner_app/widgets/room_info_detail.dart';
 import 'package:flutter/material.dart';
 
 import '../models/models.dart';
@@ -64,6 +61,7 @@ class CleaningScreen extends StatelessWidget {
             child: Column(
               children: [
                 RoomInfoTitle(),
+                SizedBox(height: 30),
                 RoomInfoDetail(
                   roomInfoTitle: 'Hospital',
                   roomInfo: currentRoom.hospital,
