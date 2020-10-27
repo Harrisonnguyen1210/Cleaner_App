@@ -12,43 +12,54 @@ class ProfileScreen extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
+      appBar: CustomAppBar.getAppBar(null),
       drawer: displayTabletLayout ? null : AppDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(48.0, 80.0, 48.0, 48.0),
-        child: Row(
-          children: [
-            Container(
-              width: screenSize.width * 0.2,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      //Use CustomScrollView to fix content not fill entire screen issue
+      body: CustomScrollView(
+        slivers: [
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(48.0, 64.0, 48.0, 48.0),
+              child: Row(
                 children: [
-                  CircleAvatar(
-                    radius: 120.0,
-                    backgroundImage: NetworkImage(
-                        'https://i1.wp.com/psych2go.net/wp-content/uploads/2014/08/91df642880432da28c563dfc45fa57f5.jpg?fit=640%2C400&ssl=1'),
+                  Container(
+                    width: screenSize.width * 0.2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          radius: 120.0,
+                          backgroundImage: NetworkImage(
+                              'https://i1.wp.com/psych2go.net/wp-content/uploads/2014/08/91df642880432da28c563dfc45fa57f5.jpg?fit=640%2C400&ssl=1'),
+                        ),
+                        SizedBox(
+                          height: 32,
+                        ),
+                        ButtonCleaning(
+                          title: 'Assigned: ${assignedRooms.length} rooms',
+                        )
+                      ],
+                    ),
                   ),
-                  SizedBox(
-                    height: 32,
+                  VerticalDivider(
+                    indent: 0,
+                    endIndent: screenSize.height * 0.5,
+                    color: Consts.grey4,
+                    thickness: 5,
+                    width: 5,
                   ),
-                  ButtonCleaning(
-                    title: 'Assigned: ${assignedRooms.length} rooms',
-                  )
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 48),
+                      child: ProfileForm(),
+                    ),
+                  ),
                 ],
               ),
             ),
-            VerticalDivider(
-              indent: 0,
-              endIndent: screenSize.height * 0.5,
-              color: Consts.grey4,
-              thickness: 5,
-              width: 5,
-            ),
-            Expanded(
-              child: Container(
-                  padding: EdgeInsets.only(left: 48), child: ProfileForm()),
-            ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
