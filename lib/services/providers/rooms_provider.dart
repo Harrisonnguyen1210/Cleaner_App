@@ -16,7 +16,8 @@ class RoomsProvider extends ChangeNotifier {
   final String baseUrl = 'https://cleaner-app-api.azurewebsites.net';
 
   Future<void> fetchAssignedRooms() async {
-    Dio dio = new Dio();
+    final Dio dio = new Dio();
+    final List<Room> roomList = [];
     final endPointUrl = '/api/cleaners/rooms';
     try {
       final response = await dio.get(
@@ -24,9 +25,11 @@ class RoomsProvider extends ChangeNotifier {
         queryParameters: {'cleaner_id': cleanerId},
         options: Options(headers: {'Authorization': apiKey}),
       );
-      final roomList = response.data as List<dynamic>;
-      roomList.forEach((room) {
-        _rooms.add(Room.fromJson(room));});
+      final responseJson = response.data as List<dynamic>;
+      responseJson.forEach((room) {
+        roomList.add(Room.fromJson(room));
+      });
+      _rooms = roomList;
       notifyListeners();
     } catch (error) {
       throw (error);

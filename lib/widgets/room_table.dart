@@ -15,12 +15,7 @@ class _RoomTableState extends State<RoomTable> {
   void initState() {
     super.initState();
     final roomsProvider = Provider.of<RoomsProvider>(context, listen: false);
-    roomsProvider.fetchAssignedRooms().then((_) {
-      selected = List<bool>.generate(
-        roomsProvider.rooms.length,
-        (index) => false,
-      );
-    });
+    roomsProvider.fetchAssignedRooms();
   }
 
   @override
@@ -28,7 +23,10 @@ class _RoomTableState extends State<RoomTable> {
     final screenSize = MediaQuery.of(context).size;
     final roomsProvider = Provider.of<RoomsProvider>(context);
     final assignedRooms = roomsProvider.rooms;
-
+    selected = List<bool>.generate(
+      roomsProvider.rooms.length,
+      (index) => false,
+    );
     return Container(
       width: double.infinity,
       height: screenSize.height / 2,
