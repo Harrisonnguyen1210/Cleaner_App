@@ -1,6 +1,6 @@
 import 'package:cleaner_app/consts.dart';
-import 'package:cleaner_app/providers/drawer_state_provider.dart';
 import 'package:cleaner_app/route_names.dart';
+import 'package:cleaner_app/services/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

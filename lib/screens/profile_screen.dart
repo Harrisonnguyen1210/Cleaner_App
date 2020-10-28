@@ -1,7 +1,8 @@
 import 'package:cleaner_app/consts.dart';
-import 'package:cleaner_app/data/data.dart';
+import 'package:cleaner_app/services/providers/providers.dart';
 import 'package:cleaner_app/widgets/profile_form.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/widgets.dart';
 
@@ -10,6 +11,8 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool displayTabletLayout = MediaQuery.of(context).size.width > 500;
     final screenSize = MediaQuery.of(context).size;
+    final roomsProvider = Provider.of<RoomsProvider>(context);
+    final assignedRooms = roomsProvider.rooms;    
 
     return Scaffold(
       appBar: CustomAppBar.getAppBar(null),

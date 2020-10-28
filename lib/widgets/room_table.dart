@@ -1,7 +1,8 @@
 import 'package:cleaner_app/consts.dart';
-import 'package:cleaner_app/data/data.dart';
 import 'package:cleaner_app/route_names.dart';
+import 'package:cleaner_app/services/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RoomTable extends StatefulWidget {
   @override
@@ -9,12 +10,24 @@ class RoomTable extends StatefulWidget {
 }
 
 class _RoomTableState extends State<RoomTable> {
-  List<bool> selected =
-      List<bool>.generate(assignedRooms.length, (index) => false);
+  List<bool> selected;
+  @override
+  void initState() {
+    super.initState();
+    final roomsProvider = Provider.of<RoomsProvider>(context, listen: false);
+    roomsProvider.fetchAssignedRooms().then((_) {
+      selected = List<bool>.generate(
+        roomsProvider.rooms.length,
+        (index) => false,
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final roomsProvider = Provider.of<RoomsProvider>(context);
+    final assignedRooms = roomsProvider.rooms;
 
     return Container(
       width: double.infinity,
@@ -81,8 +94,8 @@ class _RoomTableState extends State<RoomTable> {
                           ),
                           color: Consts.white,
                           onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(RouteNames.cleaning, arguments: assignedRooms[index]);
+                            Navigator.of(context).pushNamed(RouteNames.cleaning,
+                                arguments: assignedRooms[index]);
                           })
                       : SizedBox(width: 88.0),
                 )

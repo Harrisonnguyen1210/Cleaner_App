@@ -1,6 +1,6 @@
 import 'package:cleaner_app/helpers/custom_page_transition_builder.dart';
-import 'package:cleaner_app/providers/drawer_state_provider.dart';
 import 'package:cleaner_app/screens/screens.dart';
+import 'package:cleaner_app/services/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
       ),
       providers: [
         ChangeNotifierProvider(create: (buildContext) => DrawerStateProvider()),
+        ChangeNotifierProvider(create: (buildContext) => RoomsProvider()),
       ],
     );
   }
