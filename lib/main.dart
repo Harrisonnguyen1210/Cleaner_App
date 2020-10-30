@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (buildContext) => DrawerStateProvider()),
         ChangeNotifierProvider(create: (buildContext) => RoomsProvider()),
+        ChangeNotifierProvider(create: (buildContext) => HospitalsProvider()),
       ],
     );
   }

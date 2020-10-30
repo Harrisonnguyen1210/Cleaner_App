@@ -1,6 +1,6 @@
+import 'package:cleaner_app/services/providers/providers.dart';
 import 'package:flutter/material.dart';
-
-import '../models/models.dart';
+import 'package:provider/provider.dart';
 
 class SelectDropDownRow extends StatefulWidget {
   @override
@@ -8,16 +8,8 @@ class SelectDropDownRow extends StatefulWidget {
 }
 
 class _SelectDropDownRowState extends State<SelectDropDownRow> {
-  final List<Hospital> hospitalList = [
-    Hospital(name: 'Helsinki Hospital'),
-    Hospital(name: 'Espoo hospital'),
-    Hospital(name: 'Vantaa hospital'),
-  ];
-
   final List<String> floorList = ['1', '2', '3'];
-
   final List<String> buildingList = ['1', '2', '3'];
-
   Map<String, dynamic> filterOptions = {
     'hospital': null,
     'building': null,
@@ -25,7 +17,18 @@ class _SelectDropDownRowState extends State<SelectDropDownRow> {
   };
 
   @override
+  void initState() {
+    super.initState();
+    final hospitalsProvider =
+        Provider.of<HospitalsProvider>(context, listen: false);
+    hospitalsProvider.fetchHospitals();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final hospitalsProvider = Provider.of<HospitalsProvider>(context);
+    final roomsProvider = Provider.of<RoomsProvider>(context);
+    final hospitalList = hospitalsProvider.hospitals;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -50,6 +53,10 @@ class _SelectDropDownRowState extends State<SelectDropDownRow> {
                       ))
                   .toList(),
               onChanged: (value) {
+                roomsProvider.filterHospital(hospitalList
+                    .where((hospital) => hospital.name == value)
+                    .toList()[0]
+                    .id);
                 setState(() {
                   filterOptions['hospital'] = value;
                 });

@@ -12,4 +12,9 @@ class Consts {
   static const greenIndex = Color(0xff28AE60);
   static const yellowIndex = Color(0xffF2C94C);
   static const redIndex = Color(0xffEB5756);
+
+  //http request
+  static const String apiKey =
+      'zL43mXgXk5xa7YFRBVZscbLnGFaqVh24q5G6fhGjmAv532FAVBRtnuCJpwXWXnhw';
+  static const String baseUrl = 'https://cleaner-app-api.azurewebsites.net';
 }

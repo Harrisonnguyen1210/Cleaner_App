@@ -1,3 +1,4 @@
+import 'package:cleaner_app/consts.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -5,15 +6,19 @@ import '../../models/models.dart';
 
 class RoomsProvider extends ChangeNotifier {
   List<Room> _rooms = [];
-  String cleanerId = '5f6466236654687b489334d3';
+  String cleanerId = '5f9bd630fcc63e0036e648a5';
+  String _hospital_id;
 
   List<Room> get rooms {
-    return _rooms;
+    return _hospital_id == null
+        ? _rooms
+        : _rooms.where((room) => room.hospital == _hospital_id).toList();
   }
 
-  final String apiKey =
-      'zL43mXgXk5xa7YFRBVZscbLnGFaqVh24q5G6fhGjmAv532FAVBRtnuCJpwXWXnhw';
-  final String baseUrl = 'https://cleaner-app-api.azurewebsites.net';
+  void filterHospital(String hospitalId) {
+    _hospital_id = hospitalId;
+    notifyListeners();
+  }
 
   Future<void> fetchAssignedRooms() async {
     final Dio dio = new Dio();
@@ -21,9 +26,9 @@ class RoomsProvider extends ChangeNotifier {
     final endPointUrl = '/api/cleaners/rooms';
     try {
       final response = await dio.get(
-        baseUrl + endPointUrl,
+        Consts.baseUrl + endPointUrl,
         queryParameters: {'cleaner_id': cleanerId},
-        options: Options(headers: {'Authorization': apiKey}),
+        options: Options(headers: {'Authorization': Consts.apiKey}),
       );
       final responseJson = response.data as List<dynamic>;
       responseJson.forEach((room) {
