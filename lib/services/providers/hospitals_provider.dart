@@ -23,7 +23,8 @@ class HospitalsProvider extends ChangeNotifier {
       responseJson.forEach((hospital) {
         hospitalList.add(Hospital.fromJson(hospital));
       });
-      _hospitals = hospitalList;
+      _hospitals = hospitalList
+        ..add(Hospital(id: null, name: 'All'));
       notifyListeners();
     } catch (error) {
       throw (error);

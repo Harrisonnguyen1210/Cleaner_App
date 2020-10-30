@@ -7,16 +7,16 @@ import '../../models/models.dart';
 class RoomsProvider extends ChangeNotifier {
   List<Room> _rooms = [];
   String cleanerId = '5f9bd630fcc63e0036e648a5';
-  String _hospital_id;
+  String _hospitalId;
 
   List<Room> get rooms {
-    return _hospital_id == null
+    return _hospitalId == null
         ? _rooms
-        : _rooms.where((room) => room.hospital == _hospital_id).toList();
+        : _rooms.where((room) => room.hospital == _hospitalId).toList();
   }
 
   void filterHospital(String hospitalId) {
-    _hospital_id = hospitalId;
+    _hospitalId = hospitalId;
     notifyListeners();
   }
 

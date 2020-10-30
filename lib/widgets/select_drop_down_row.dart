@@ -29,6 +29,7 @@ class _SelectDropDownRowState extends State<SelectDropDownRow> {
     final hospitalsProvider = Provider.of<HospitalsProvider>(context);
     final roomsProvider = Provider.of<RoomsProvider>(context);
     final hospitalList = hospitalsProvider.hospitals;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
