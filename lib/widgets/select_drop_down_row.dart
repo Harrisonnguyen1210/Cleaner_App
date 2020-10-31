@@ -8,8 +8,8 @@ class SelectDropDownRow extends StatefulWidget {
 }
 
 class _SelectDropDownRowState extends State<SelectDropDownRow> {
-  final List<String> floorList = ['1', '2', '3'];
-  final List<String> buildingList = ['1', '2', '3'];
+  final List<String> floorList = ['1', '2', 'All'];
+  final List<String> buildingList = ['1', '2', 'All'];
   Map<String, dynamic> filterOptions = {
     'hospital': null,
     'building': null,
@@ -87,6 +87,7 @@ class _SelectDropDownRowState extends State<SelectDropDownRow> {
                       ))
                   .toList(),
               onChanged: (value) {
+                roomsProvider.filterBuilding(value);
                 setState(() {
                   filterOptions['building'] = value;
                 });
@@ -116,6 +117,7 @@ class _SelectDropDownRowState extends State<SelectDropDownRow> {
                       ))
                   .toList(),
               onChanged: (value) {
+                roomsProvider.filterFloor(value);
                 setState(() {
                   filterOptions['floor'] = value;
                 });
