@@ -1,4 +1,6 @@
+import 'package:cleaner_app/services/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/models.dart';
 import '../widgets/widgets.dart';
@@ -6,6 +8,8 @@ import '../widgets/widgets.dart';
 class CleaningScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final hospitalsProvider =
+        Provider.of<HospitalsProvider>(context, listen: false);
     var screenSize = MediaQuery.of(context).size;
     final Room currentRoom = ModalRoute.of(context).settings.arguments;
     return Scaffold(
@@ -49,7 +53,7 @@ class CleaningScreen extends StatelessWidget {
                   //TODO: Add activity graph here
                   Expanded(
                     child: Container(
-                      color: Colors.red,
+                      color: Colors.white,
                     ),
                   )
                 ],
@@ -64,7 +68,10 @@ class CleaningScreen extends StatelessWidget {
                 SizedBox(height: 30),
                 RoomInfoDetail(
                   roomInfoTitle: 'Hospital',
-                  roomInfo: currentRoom.hospital,
+                  roomInfo: hospitalsProvider.hospitals
+                      .where((hospital) => hospital.id == currentRoom.hospital)
+                      .toList()[0]
+                      .name,
                   icon: Icons.local_hospital,
                 ),
                 RoomInfoDetail(
