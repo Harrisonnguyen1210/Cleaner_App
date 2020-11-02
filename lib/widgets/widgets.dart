@@ -6,3 +6,5 @@ export 'room_info_title.dart';
 export 'room_info_detail.dart';
 export 'button_cleaning.dart';
 export 'report_drop_down.dart';
+export 'contamination_map.dart';
+export 'cleaning_screen_content.dart';

@@ -25,6 +25,7 @@ dependencies:
     sdk: flutter
   provider: ^4.3.2+2
   dio: ^3.0.10
+  bitmap: ^0.0.6
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

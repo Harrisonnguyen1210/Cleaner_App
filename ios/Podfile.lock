@@ -1,0 +1,22 @@
+PODS:
+  - bitmap (0.0.1):
+    - Flutter
+  - Flutter (1.0.0)
+
+DEPENDENCIES:
+  - bitmap (from `.symlinks/plugins/bitmap/ios`)
+  - Flutter (from `Flutter`)
+
+EXTERNAL SOURCES:
+  bitmap:
+    :path: ".symlinks/plugins/bitmap/ios"
+  Flutter:
+    :path: Flutter
+
+SPEC CHECKSUMS:
+  bitmap: 518bfe1da32cb535d62e55a5c528245dd8719ae5
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.9.3
