@@ -110,7 +110,7 @@ class _CleaningScreenContentState extends State<CleaningScreenContent> {
                       icon: Icons.person,
                     ),
                     SizedBox(height: 80),
-                    ButtonCleaning(title: 'START CLEANING'),
+                    CustomButton(title: 'START CLEANING', onPress: () {},),
                   ],
                 ),
               )

@@ -1,4 +1,5 @@
 import 'package:cleaner_app/helpers/custom_page_transition_builder.dart';
+import 'package:cleaner_app/screens/login_screen.dart';
 import 'package:cleaner_app/screens/screens.dart';
 import 'package:cleaner_app/services/providers/providers.dart';
 import 'package:flutter/material.dart';
@@ -25,9 +26,13 @@ class MyApp extends StatelessWidget {
             },
           ),
         ),
-        home: HomeScreen(),
+        home: Consumer<AuthProvider>(
+          builder: (context, authProvider, child) =>
+              authProvider.isAuth ? HomeScreen() : LoginScreen(),
+        ),
       ),
       providers: [
+        ChangeNotifierProvider(create: (buildContext) => AuthProvider()),
         ChangeNotifierProvider(create: (buildContext) => DrawerStateProvider()),
         ChangeNotifierProvider(create: (buildContext) => RoomsProvider()),
         ChangeNotifierProvider(create: (buildContext) => HospitalsProvider()),

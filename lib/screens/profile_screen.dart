@@ -39,8 +39,9 @@ class ProfileScreen extends StatelessWidget {
                         SizedBox(
                           height: 32,
                         ),
-                        ButtonCleaning(
+                        CustomButton(
                           title: 'Assigned: ${assignedRooms.length} rooms',
+                          onPress: () {},
                         )
                       ],
                     ),

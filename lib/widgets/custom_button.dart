@@ -1,15 +1,21 @@
 import 'package:cleaner_app/consts.dart';
 import 'package:flutter/material.dart';
 
-class ButtonCleaning extends StatelessWidget {
+class CustomButton extends StatelessWidget {
   final String title;
+  final Function onPress;
 
-  const ButtonCleaning({Key key, this.title}) : super(key: key);
+  const CustomButton({
+    Key key,
+    @required this.title,
+    @required this.onPress,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ButtonTheme(
       height: 60,
+      minWidth: 150,
       child: RaisedButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
@@ -23,7 +29,7 @@ class ButtonCleaning extends StatelessWidget {
           ),
         ),
         color: Consts.primaryBlue,
-        onPressed: () {},
+        onPressed: onPress,
       ),
     );
   }
