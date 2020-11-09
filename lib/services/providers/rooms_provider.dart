@@ -23,6 +23,12 @@ class RoomsProvider extends ChangeNotifier {
     return filteredRooms;
   }
 
+  void resetFilter() {
+    _hospitalId = null;
+    _floor = null;
+    _building = null;
+  }
+
   void filterHospital(String hospitalId) {
     _hospitalId = hospitalId;
     notifyListeners();
@@ -38,7 +44,7 @@ class RoomsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchAssignedRooms() async {
+  Future<List<Room>> fetchAssignedRooms() async {
     final Dio dio = new Dio();
     final List<Room> roomList = [];
     final endPointUrl = '/api/cleaners/rooms';
@@ -54,6 +60,7 @@ class RoomsProvider extends ChangeNotifier {
       });
       _rooms = roomList;
       notifyListeners();
+      return _rooms;
     } catch (error) {
       throw (error);
     }
