@@ -14,7 +14,7 @@ class ContaminationMap extends StatelessWidget {
       child: Container(
         height: screenSize.height * 0.4,
         width: double.infinity,
-        child: Image.memory(singleRoomProvider.image, fit: BoxFit.cover),
+        child: Image.memory(singleRoomProvider.imageData, fit: BoxFit.cover),
       ),
     );
   }
