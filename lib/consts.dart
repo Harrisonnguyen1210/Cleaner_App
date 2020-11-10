@@ -17,4 +17,7 @@ class Consts {
   static const String apiKey =
       'zL43mXgXk5xa7YFRBVZscbLnGFaqVh24q5G6fhGjmAv532FAVBRtnuCJpwXWXnhw';
   static const String baseUrl = 'https://cleaner-app-api.azurewebsites.net';
+
+  //navigator key
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 }

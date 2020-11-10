@@ -12,6 +12,6 @@ class Cleaner {
   });
 
   factory Cleaner.fromJson(dynamic cleaner) {
-    return Cleaner(id: cleaner['id'], name: cleaner['name']);
+    return Cleaner(id: cleaner['_id'], name: cleaner['name']);
   }
 }

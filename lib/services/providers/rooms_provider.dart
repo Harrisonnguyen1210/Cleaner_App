@@ -6,7 +6,7 @@ import '../../models/models.dart';
 
 class RoomsProvider extends ChangeNotifier {
   List<Room> _rooms = [];
-  String cleanerId = '5f9bd630fcc63e0036e648a5';
+  String _cleanerId;
   String _hospitalId, _floor, _building;
 
   List<Room> get rooms {
@@ -44,6 +44,10 @@ class RoomsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateCleanerId(String cleanerId) {
+    _cleanerId = cleanerId;
+  }
+
   Future<List<Room>> fetchAssignedRooms() async {
     final Dio dio = new Dio();
     final List<Room> roomList = [];
@@ -51,7 +55,7 @@ class RoomsProvider extends ChangeNotifier {
     try {
       final response = await dio.get(
         Consts.baseUrl + endPointUrl,
-        queryParameters: {'cleaner_id': cleanerId},
+        queryParameters: {'cleaner_id': _cleanerId},
         options: Options(headers: {'Authorization': Consts.apiKey}),
       );
       final responseJson = response.data as List<dynamic>;

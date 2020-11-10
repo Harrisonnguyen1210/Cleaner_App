@@ -1,3 +1,4 @@
+import 'package:cleaner_app/consts.dart';
 import 'package:cleaner_app/route_names.dart';
 import 'package:cleaner_app/screens/cleaning_screen.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreeenState extends State<HomeScreen> {
-  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +19,10 @@ class _HomeScreeenState extends State<HomeScreen> {
     return SafeArea(
       child: Row(
         children: [
-          if (displayTabletLayout) AppDrawer(navigatorKey: navigatorKey),
+          if (displayTabletLayout) AppDrawer(navigatorKey: Consts.navigatorKey),
           Expanded(
             child: Navigator(
-              key: navigatorKey,
+              key: Consts.navigatorKey,
               initialRoute: RouteNames.overview,
               onGenerateRoute: (RouteSettings settings) {
                 switch (settings.name) {

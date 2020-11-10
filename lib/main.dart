@@ -34,7 +34,11 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (buildContext) => AuthProvider()),
         ChangeNotifierProvider(create: (buildContext) => DrawerStateProvider()),
-        ChangeNotifierProvider(create: (buildContext) => RoomsProvider()),
+        ChangeNotifierProxyProvider<AuthProvider, RoomsProvider>(
+          create: (buildContext) => RoomsProvider(),
+          update: (buildContext, authProvider, roomsProvider) =>
+              roomsProvider..updateCleanerId(authProvider.cleaner.id),
+        ),
         ChangeNotifierProvider(create: (buildContext) => HospitalsProvider()),
       ],
     );
