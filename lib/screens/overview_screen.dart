@@ -1,6 +1,8 @@
 import 'package:cleaner_app/consts.dart';
+import 'package:cleaner_app/services/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:cleaner_app/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/widgets.dart';
 
@@ -44,24 +46,26 @@ class OverviewScreen extends StatelessWidget {
             ),
             Align(
               alignment: Alignment.centerRight,
-              child: RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                        text: 'Welcome back ',
+              child: Consumer<AuthProvider>(
+                builder: (buildContext, authProvider, child) => RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                          text: 'Welcome back ',
+                          style: TextStyle(
+                            color: Consts.textGrey,
+                            fontSize: 20,
+                          )),
+                      TextSpan(
+                        text: authProvider.cleaner.name,
                         style: TextStyle(
-                          color: Consts.textGrey,
-                          fontSize: 20,
-                        )),
-                    TextSpan(
-                      text: 'Harrison',
-                      style: TextStyle(
-                        color: Consts.primaryBlue,
-                        fontSize: 30,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    )
-                  ],
+                          color: Consts.primaryBlue,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

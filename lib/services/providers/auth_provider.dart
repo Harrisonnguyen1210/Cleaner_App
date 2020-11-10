@@ -5,11 +5,16 @@ import 'package:flutter/material.dart';
 
 class AuthProvider extends ChangeNotifier {
   List<Cleaner> _cleanerList = [];
+  Cleaner _currentCleaner;
 
   bool _isAuth = false;
 
   bool get isAuth {
     return _isAuth;
+  }
+
+  Cleaner get cleaner {
+    return _currentCleaner;
   }
 
   Future<void> _getCleanerList() async {
@@ -34,10 +39,13 @@ class AuthProvider extends ChangeNotifier {
   Future<void> authenticate(String cleanerName) async {
     await _getCleanerList();
     if (_cleanerList != null) {
-      _isAuth = _cleanerList
-          .where((cleaner) =>
-              cleaner.name.toLowerCase() == cleanerName.toLowerCase())
-          .isNotEmpty;
+      _isAuth = _cleanerList.where((cleaner) {
+        if (cleaner.name.toLowerCase() == cleanerName.toLowerCase()) {
+          _currentCleaner = cleaner;
+          return true;
+        } else
+          return false;
+      }).isNotEmpty;
       if (!_isAuth)
         throw Exception(
           'Authentication failed, please check your user credentials',

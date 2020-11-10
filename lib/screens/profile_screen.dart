@@ -34,7 +34,7 @@ class ProfileScreen extends StatelessWidget {
                         CircleAvatar(
                           radius: 120.0,
                           backgroundImage: NetworkImage(
-                              'https://i1.wp.com/psych2go.net/wp-content/uploads/2014/08/91df642880432da28c563dfc45fa57f5.jpg?fit=640%2C400&ssl=1'),
+                              'https://cdn5.vectorstock.com/i/thumb-large/85/94/person-gray-photo-placeholder-man-silhouette-sign-vector-23838594.jpg'),
                         ),
                         SizedBox(
                           height: 32,
