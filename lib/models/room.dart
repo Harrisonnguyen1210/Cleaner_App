@@ -10,7 +10,7 @@ class Room {
       roomType,
       patient,
       lastCleaned;
-  final bool isCleaning;
+  final bool isCleaning, hasSensor;
   final num contaminationIndex;
 
   Room({
@@ -24,12 +24,13 @@ class Room {
     @required this.patient,
     @required this.roomType,
     @required this.lastCleaned,
+    @required this.hasSensor
   });
 
   Color get contaminationColor {
-    if (contaminationIndex <= 100)
+    if (contaminationIndex <= 0.3)
       return Consts.greenIndex;
-    else if (contaminationIndex > 100 && contaminationIndex < 200)
+    else if (contaminationIndex > 0.3 && contaminationIndex < 0.6)
       return Consts.yellowIndex;
     else
       return Consts.redIndex;
@@ -54,6 +55,7 @@ class Room {
       patient: room['patient'] == '<empty>' ? '0' : room['patient'],
       lastCleaned: room['last_cleaned'] ?? 'unknown',
       roomType: room['room_type'] == '<empty>' ? 'Normal room' : room['room_type'],
+      hasSensor: room['sensor_id'] != null ? true : false
     );
   }
 }

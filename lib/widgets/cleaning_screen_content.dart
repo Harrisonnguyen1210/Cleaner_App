@@ -1,4 +1,5 @@
 import 'package:cleaner_app/consts.dart';
+import 'package:cleaner_app/helpers/custom_dialog.dart';
 import 'package:cleaner_app/models/models.dart';
 import 'package:cleaner_app/services/providers/providers.dart';
 import 'package:cleaner_app/widgets/contamination_map.dart';
@@ -27,12 +28,20 @@ class _CleaningScreenContentState extends State<CleaningScreenContent> {
     });
   }
 
+  void _startCleaning() {}
+
+  void _onStartCleaningButtonClicked(BuildContext context) {
+    CustomDialog.showCustomDialog(
+        context, 'Do you want to start cleaning', _startCleaning);
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final hospitalsProvider =
         Provider.of<HospitalsProvider>(context, listen: false);
-    final Room currentRoom = ModalRoute.of(context).settings.arguments;
+    final singleRoomProvider = Provider.of<SingleRoomProvider>(context);
+    final currentRoom = singleRoomProvider.room;
 
     return _isLoading
         ? Center(
@@ -110,7 +119,10 @@ class _CleaningScreenContentState extends State<CleaningScreenContent> {
                       icon: Icons.person,
                     ),
                     SizedBox(height: 80),
-                    CustomButton(title: 'START CLEANING', onPress: () {},),
+                    CustomButton(
+                      title: 'START CLEANING',
+                      onPress: () => _onStartCleaningButtonClicked(context),
+                    ),
                   ],
                 ),
               )

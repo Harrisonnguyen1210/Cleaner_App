@@ -19,16 +19,14 @@ class SingleRoomProvider extends ChangeNotifier {
   }
 
   Future<void> fetchContaminationMap() async {
+    if (!room.hasSensor) return;
     final Dio dio = new Dio();
     final endPointUrl = '/api/room/heatmap';
     final List<Uint8List> colorMap = initColorMaps();
     try {
       final response = await dio.get(
         Consts.baseUrl + endPointUrl,
-        queryParameters: {
-          '_id': '5f6c5a7e8934b52296b957c5',
-          'type': 'contamination'
-        },
+        queryParameters: {'_id': room.id, 'type': 'contamination'},
         options: Options(
           responseType: ResponseType.bytes,
           headers: {'Authorization': Consts.apiKey},
