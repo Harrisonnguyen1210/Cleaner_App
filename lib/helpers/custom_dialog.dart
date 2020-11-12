@@ -13,7 +13,10 @@ class CustomDialog {
         content: Text(dialogContent),
         actions: <Widget>[
           FlatButton(
-            onPressed: acceptFunction,
+            onPressed: () {
+              Navigator.of(context).pop();
+              acceptFunction();
+            },
             child: Text('Okay'),
           ),
           FlatButton(

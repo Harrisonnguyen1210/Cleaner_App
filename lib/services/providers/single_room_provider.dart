@@ -18,11 +18,17 @@ class SingleRoomProvider extends ChangeNotifier {
     return _imageData;
   }
 
+  bool _isCleaning = false;
+
+  bool get isCleaning {
+    return _isCleaning;
+  }
+
   Future<void> fetchContaminationMap() async {
     if (!room.hasSensor) return;
     final Dio dio = new Dio();
     final endPointUrl = '/api/room/heatmap';
-    final List<Uint8List> colorMap = initColorMaps();
+    final List<Uint8List> colorMap = _initColorMaps();
     try {
       final response = await dio.get(
         Consts.baseUrl + endPointUrl,
@@ -34,7 +40,7 @@ class SingleRoomProvider extends ChangeNotifier {
         ),
       );
       Uint64List imageDataInUint64 = response.data.buffer.asUint64List();
-      final imageDataInUint8 = convert64to8(imageDataInUint64);
+      final imageDataInUint8 = _convert64to8(imageDataInUint64);
       var imgArr = Uint8List(17280);
       if (imageDataInUint8 != null && imageDataInUint8.isNotEmpty) {
         var byteIdx = 0;
@@ -56,7 +62,43 @@ class SingleRoomProvider extends ChangeNotifier {
     }
   }
 
-  Uint8ClampedList convert64to8(Uint64List array) {
+  Future<void> startCleaning() async {
+    final Dio dio = new Dio();
+    final endPointUrl = '/api/room/startcleaning';
+    try {
+      await dio.get(
+        Consts.baseUrl + endPointUrl,
+        queryParameters: {'_id': room.id},
+        options: Options(
+          headers: {'Authorization': Consts.apiKey},
+        ),
+      );
+    } catch (error) {
+      throw (error);
+    }
+    _isCleaning = true;
+    notifyListeners();
+  }
+
+  Future<void> stopCleaning() async {
+    final Dio dio = new Dio();
+    final endPointUrl = '/api/room/stopcleaning';
+    try {
+      await dio.get(
+        Consts.baseUrl + endPointUrl,
+        queryParameters: {'_id': room.id},
+        options: Options(
+          headers: {'Authorization': Consts.apiKey},
+        ),
+      );
+    } catch (error) {
+      throw (error);
+    }
+    _isCleaning = false;
+    notifyListeners();
+  }
+
+  Uint8ClampedList _convert64to8(Uint64List array) {
     var min, max, pix;
     var minRaw = 9223372036854775807;
     var maxRaw = 0;
@@ -89,7 +131,7 @@ class SingleRoomProvider extends ChangeNotifier {
     return Uint8ClampedList.fromList(imP);
   }
 
-  List<Uint8List> initColorMaps() {
+  List<Uint8List> _initColorMaps() {
     List<int> tableRed = [];
     List<int> tableGreen = [];
     List<int> tableBlue = [];

@@ -1,10 +1,12 @@
 import 'package:cleaner_app/consts.dart';
 import 'package:cleaner_app/helpers/custom_dialog.dart';
-import 'package:cleaner_app/models/models.dart';
+import 'package:cleaner_app/helpers/error_dialog.dart';
+import 'package:cleaner_app/route_names.dart';
 import 'package:cleaner_app/services/providers/providers.dart';
 import 'package:cleaner_app/widgets/contamination_map.dart';
 import 'package:cleaner_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class CleaningScreenContent extends StatefulWidget {
@@ -12,7 +14,8 @@ class CleaningScreenContent extends StatefulWidget {
   _CleaningScreenContentState createState() => _CleaningScreenContentState();
 }
 
-class _CleaningScreenContentState extends State<CleaningScreenContent> {
+class _CleaningScreenContentState extends State<CleaningScreenContent>
+    with TickerProviderStateMixin {
   bool _isLoading = false;
 
   @override
@@ -21,18 +24,30 @@ class _CleaningScreenContentState extends State<CleaningScreenContent> {
     _isLoading = true;
     final singleRoomProvider =
         Provider.of<SingleRoomProvider>(context, listen: false);
-    singleRoomProvider.fetchContaminationMap().then((_) {
-      setState(() {
-        _isLoading = false;
+    try {
+      singleRoomProvider.fetchContaminationMap().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
       });
-    });
+    } catch (error) {
+      ErrorDialog.showErrorDialog(context, errorContent: error.toString());
+    }
   }
 
-  void _startCleaning() {}
-
-  void _onStartCleaningButtonClicked(BuildContext context) {
+  void _onCleaningButtonClicked(
+    BuildContext context,
+    SingleRoomProvider singleRoomProvider,
+  ) {
     CustomDialog.showCustomDialog(
-        context, 'Do you want to start cleaning', _startCleaning);
+      context,
+      'Do you want to ${singleRoomProvider.isCleaning ? 'stop' : 'start'} cleaning?',
+      () => singleRoomProvider.isCleaning
+          ? singleRoomProvider.stopCleaning().then((_) => Consts
+              .navigatorKey.currentState
+              .pushNamedAndRemoveUntil(RouteNames.report, (_) => false))
+          : singleRoomProvider.startCleaning(),
+    );
   }
 
   @override
@@ -42,6 +57,7 @@ class _CleaningScreenContentState extends State<CleaningScreenContent> {
         Provider.of<HospitalsProvider>(context, listen: false);
     final singleRoomProvider = Provider.of<SingleRoomProvider>(context);
     final currentRoom = singleRoomProvider.room;
+    final isCleaning = singleRoomProvider.isCleaning;
 
     return _isLoading
         ? Center(
@@ -119,9 +135,22 @@ class _CleaningScreenContentState extends State<CleaningScreenContent> {
                       icon: Icons.person,
                     ),
                     SizedBox(height: 80),
+                    isCleaning
+                        ? SpinKitWave(
+                            size: 30.0,
+                            color: Consts.primaryBlue,
+                            controller: AnimationController(
+                                vsync: this,
+                                duration: const Duration(milliseconds: 1200)),
+                          )
+                        : SizedBox.shrink(),
+                    SizedBox(height: 20),
                     CustomButton(
-                      title: 'START CLEANING',
-                      onPress: () => _onStartCleaningButtonClicked(context),
+                      title: isCleaning ? 'STOP CLEANING' : 'START CLEANING',
+                      onPress: () => _onCleaningButtonClicked(
+                        context,
+                        singleRoomProvider,
+                      ),
                     ),
                   ],
                 ),
