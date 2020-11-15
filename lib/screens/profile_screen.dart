@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import '../widgets/widgets.dart';
 
 class ProfileScreen extends StatelessWidget {
-  void navigateToOverview(BuildContext context) {
+  void _navigateToOverviewScreen(BuildContext context) {
     final drawerStateProvider =
         Provider.of<DrawerStateProvider>(context, listen: false);
 
@@ -51,7 +51,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         CustomButton(
                           title: 'Assigned: ${assignedRooms.length} rooms',
-                          onPress: () => navigateToOverview(context),
+                          onPress: () => _navigateToOverviewScreen(context),
                         )
                       ],
                     ),

@@ -1,6 +1,7 @@
 import 'package:cleaner_app/consts.dart';
 import 'package:cleaner_app/helpers/custom_dialog.dart';
 import 'package:cleaner_app/helpers/error_dialog.dart';
+import 'package:cleaner_app/models/models.dart';
 import 'package:cleaner_app/route_names.dart';
 import 'package:cleaner_app/services/providers/providers.dart';
 import 'package:cleaner_app/widgets/contamination_map.dart';
@@ -35,18 +36,30 @@ class _CleaningScreenContentState extends State<CleaningScreenContent>
     }
   }
 
-  void _onCleaningButtonClicked(
-    BuildContext context,
-    SingleRoomProvider singleRoomProvider,
-  ) {
+  void _onCleaningButtonClicked() {
+    final singleRoomProvider =
+        Provider.of<SingleRoomProvider>(context, listen: false);
     CustomDialog.showCustomDialog(
       context,
       'Do you want to ${singleRoomProvider.isCleaning ? 'stop' : 'start'} cleaning?',
       () => singleRoomProvider.isCleaning
-          ? singleRoomProvider.stopCleaning().then((_) => Consts
-              .navigatorKey.currentState
-              .pushNamedAndRemoveUntil(RouteNames.report, (_) => false))
+          ? singleRoomProvider
+              .stopCleaning()
+              .then((_) => _navigateToReportScreen(singleRoomProvider.room))
           : singleRoomProvider.startCleaning(),
+    );
+  }
+
+  void _navigateToReportScreen(Room room) {
+    final drawerStateProvider = Provider.of<DrawerStateProvider>(
+      context,
+      listen: false,
+    );
+    drawerStateProvider.setCurrentDrawer(2);
+    Consts.navigatorKey.currentState.pushNamedAndRemoveUntil(
+      RouteNames.report,
+      (_) => false,
+      arguments: room,
     );
   }
 
@@ -147,10 +160,7 @@ class _CleaningScreenContentState extends State<CleaningScreenContent>
                     SizedBox(height: 20),
                     CustomButton(
                       title: isCleaning ? 'STOP CLEANING' : 'START CLEANING',
-                      onPress: () => _onCleaningButtonClicked(
-                        context,
-                        singleRoomProvider,
-                      ),
+                      onPress: _onCleaningButtonClicked,
                     ),
                   ],
                 ),
