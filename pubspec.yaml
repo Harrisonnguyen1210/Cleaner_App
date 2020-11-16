@@ -27,6 +27,7 @@ dependencies:
   dio: ^3.0.10
   bitmap: ^0.0.6
   flutter_spinkit: "^4.1.2"
+  flutter_phoenix: ^0.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -50,6 +51,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/no_heatmap_placeholder.jpg
+    - assets/images/profile_placeholder.jpg
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
