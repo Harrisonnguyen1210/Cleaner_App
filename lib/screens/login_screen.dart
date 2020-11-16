@@ -2,6 +2,7 @@ import 'package:cleaner_app/consts.dart';
 import 'package:cleaner_app/helpers/error_dialog.dart';
 import 'package:cleaner_app/services/providers/providers.dart';
 import 'package:cleaner_app/widgets/widgets.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,13 +28,15 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       await authProvider.authenticate(_authData['name']);
+    } on DioError catch (_) {
+      ErrorDialog.showErrorDialog(context);
     } catch (error) {
       ErrorDialog.showErrorDialog(context, errorContent: error.toString());
     }
     setState(() {
       _isLoading = false;
     });
-  } 
+  }
 
   @override
   Widget build(BuildContext context) {

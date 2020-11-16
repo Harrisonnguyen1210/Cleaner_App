@@ -21,7 +21,8 @@ class _SelectDropDownRowState extends State<SelectDropDownRow> {
     super.initState();
     final hospitalsProvider =
         Provider.of<HospitalsProvider>(context, listen: false);
-    hospitalsProvider.fetchHospitals();
+    hospitalsProvider.fetchHospitals().catchError((error) {
+    });
   }
 
   @override

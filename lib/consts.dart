@@ -20,4 +20,7 @@ class Consts {
 
   //navigator key
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+  //cleaning screen key
+  static GlobalKey cleaningScreenKey = GlobalKey();
 }

@@ -1,3 +1,4 @@
+import 'package:cleaner_app/consts.dart';
 import 'package:cleaner_app/models/models.dart';
 import 'package:cleaner_app/services/providers/providers.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class CleaningScreen extends StatelessWidget {
     final Room currentRoom = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
+      key: Consts.cleaningScreenKey,
       appBar: CustomAppBar.getAppBar(Text(currentRoom.name)),
       body: ChangeNotifierProvider(
         create: (buildContext) => SingleRoomProvider(currentRoom),

@@ -5,6 +5,7 @@ import 'package:cleaner_app/models/models.dart';
 import 'package:cleaner_app/route_names.dart';
 import 'package:cleaner_app/services/providers/auth_provider.dart';
 import 'package:cleaner_app/services/providers/providers.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -66,6 +67,8 @@ class _ReportScreenState extends State<ReportScreen> {
         CustomDialog.showCustomDialog(context, 'Report submited',
             () => _navigateToOverviewScreen(context));
       });
+    } on DioError catch (_) {
+      ErrorDialog.showErrorDialog(context);
     } catch (error) {
       ErrorDialog.showErrorDialog(context, errorContent: error.toString());
     }

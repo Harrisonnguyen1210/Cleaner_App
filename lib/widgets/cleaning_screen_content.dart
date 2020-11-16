@@ -25,15 +25,13 @@ class _CleaningScreenContentState extends State<CleaningScreenContent>
     _isLoading = true;
     final singleRoomProvider =
         Provider.of<SingleRoomProvider>(context, listen: false);
-    try {
-      singleRoomProvider.fetchContaminationMap().then((_) {
-        setState(() {
-          _isLoading = false;
-        });
+    singleRoomProvider.fetchContaminationMap().then((_) {
+      setState(() {
+        _isLoading = false;
       });
-    } catch (error) {
-      ErrorDialog.showErrorDialog(context, errorContent: error.toString());
-    }
+    }).catchError((error) {
+      ErrorDialog.showErrorDialog(context);
+    });
   }
 
   void _onCleaningButtonClicked() {
