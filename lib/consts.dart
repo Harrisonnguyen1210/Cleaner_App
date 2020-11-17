@@ -17,6 +17,14 @@ class Consts {
   static const String apiKey =
       'zL43mXgXk5xa7YFRBVZscbLnGFaqVh24q5G6fhGjmAv532FAVBRtnuCJpwXWXnhw';
   static const String baseUrl = 'https://cleaner-app-api.azurewebsites.net';
+  static const String internetError =
+      'Please check your internet connection or try again later!';
+  static const String noSuchSensor =
+      'No such sensor exists or no access to cameras';
+  static const String unindentifiedError =
+      'There is a problem at the moment. Please try again later';
+  static const String reportError =
+      'Possible invalid report data. Please check room number or try again later';
 
   //navigator key
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

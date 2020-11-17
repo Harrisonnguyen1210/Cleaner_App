@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cleaner_app/consts.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +25,8 @@ class RoomsProvider extends ChangeNotifier {
     return filteredRooms;
   }
 
-  void resetFilter() {
+  void resetDataAndFilter() {
+    _rooms = [];
     _hospitalId = null;
     _floor = null;
     _building = null;
@@ -66,7 +69,8 @@ class RoomsProvider extends ChangeNotifier {
       notifyListeners();
       return _rooms;
     } catch (error) {
-      throw (error);
+      if (error.error is SocketException) throw Exception(Consts.internetError);
+      throw Exception(Consts.unindentifiedError);
     }
   }
 }

@@ -30,7 +30,7 @@ class _CleaningScreenContentState extends State<CleaningScreenContent>
         _isLoading = false;
       });
     }).catchError((error) {
-      ErrorDialog.showErrorDialog(context);
+      ErrorDialog.showErrorDialog(context, error.toString());
     });
   }
 

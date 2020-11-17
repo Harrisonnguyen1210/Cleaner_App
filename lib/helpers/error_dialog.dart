@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ErrorDialog {
-  static void showErrorDialog(BuildContext context,
-      {String errorContent =
-          'Please check your internet connection or try again later!'}) {
+  static void showErrorDialog(BuildContext context, String errorContent) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(

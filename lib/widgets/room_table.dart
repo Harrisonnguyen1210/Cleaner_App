@@ -19,7 +19,7 @@ class _RoomTableState extends State<RoomTable> {
     super.initState();
     _isLoading = true;
     final roomsProvider = Provider.of<RoomsProvider>(context, listen: false);
-    roomsProvider.resetFilter();
+    roomsProvider.resetDataAndFilter();
     roomsProvider.fetchAssignedRooms().then((roomList) {
       selected = List<bool>.generate(
         roomList.length,
@@ -29,7 +29,10 @@ class _RoomTableState extends State<RoomTable> {
         _isLoading = false;
       });
     }).catchError((error) {
-      ErrorDialog.showErrorDialog(context);
+      ErrorDialog.showErrorDialog(context, error.toString());
+      setState(() {
+        _isLoading = false;
+      });
     });
   }
 

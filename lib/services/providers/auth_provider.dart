@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cleaner_app/consts.dart';
 import 'package:cleaner_app/models/models.dart';
 import 'package:dio/dio.dart';
@@ -32,7 +34,8 @@ class AuthProvider extends ChangeNotifier {
       });
       _cleanerList = cleanerList;
     } catch (error) {
-      throw (error);
+      if (error.error is SocketException) throw Exception(Consts.internetError);
+      throw Exception(Consts.unindentifiedError);
     }
   }
 

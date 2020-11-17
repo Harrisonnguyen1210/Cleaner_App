@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -58,11 +59,13 @@ class SingleRoomProvider extends ChangeNotifier {
       _imageData = bitmap.buildHeaded();
       notifyListeners();
     } catch (error) {
-      throw (error);
+      if (error.error is SocketException) throw Exception(Consts.internetError);
+      throw Exception(Consts.unindentifiedError);
     }
   }
 
   Future<void> startCleaning() async {
+    if (!room.hasSensor) throw Exception(Consts.noSuchSensor);
     final Dio dio = new Dio();
     final endPointUrl = '/api/room/startcleaning';
     try {
@@ -74,13 +77,15 @@ class SingleRoomProvider extends ChangeNotifier {
         ),
       );
     } catch (error) {
-      throw (error);
+      if (error.error is SocketException) throw Exception(Consts.internetError);
+      throw Exception(Consts.unindentifiedError);
     }
     _isCleaning = true;
     notifyListeners();
   }
 
   Future<void> stopCleaning() async {
+    if (!room.hasSensor) throw Exception(Consts.noSuchSensor);
     final Dio dio = new Dio();
     final endPointUrl = '/api/room/stopcleaning';
     try {
@@ -92,7 +97,8 @@ class SingleRoomProvider extends ChangeNotifier {
         ),
       );
     } catch (error) {
-      throw (error);
+      if (error.error is SocketException) throw Exception(Consts.internetError);
+      throw Exception(Consts.unindentifiedError);
     }
     _isCleaning = false;
     notifyListeners();

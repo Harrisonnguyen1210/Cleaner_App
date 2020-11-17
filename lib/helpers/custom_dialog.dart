@@ -1,6 +1,5 @@
 import 'package:cleaner_app/consts.dart';
 import 'package:cleaner_app/helpers/error_dialog.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class CustomDialog {
@@ -20,12 +19,10 @@ class CustomDialog {
               Navigator.of(context).pop();
               try {
                 await acceptFunction();
-              } on DioError catch (_) {
-                ErrorDialog.showErrorDialog(context);
               } catch (error) {
                 ErrorDialog.showErrorDialog(
                   Consts.cleaningScreenKey.currentContext,
-                  errorContent: error.response.data['error'],
+                  error.toString(),
                 );
               }
             },
