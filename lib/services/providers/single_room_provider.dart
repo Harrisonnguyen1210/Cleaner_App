@@ -7,9 +7,12 @@ import 'package:cleaner_app/consts.dart';
 import 'package:cleaner_app/models/models.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class SingleRoomProvider extends ChangeNotifier {
   final Room room;
+
+  Map<String, dynamic> activityGraphData;
 
   SingleRoomProvider(this.room);
 
@@ -42,7 +45,7 @@ class SingleRoomProvider extends ChangeNotifier {
       );
       Uint64List imageDataInUint64 = response.data.buffer.asUint64List();
       final imageDataInUint8 = _convert64to8(imageDataInUint64);
-      var imgArr = Uint8List(17280);
+      var imgArr = Uint8List(imageDataInUint8.length * 4);
       if (imageDataInUint8 != null && imageDataInUint8.isNotEmpty) {
         var byteIdx = 0;
         for (var imgIdx = 0; imgIdx < imgArr.length; imgIdx += 4) {
@@ -104,6 +107,68 @@ class SingleRoomProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> fetchActivityGraph() async {
+    if (!room.hasSensor) throw Exception(Consts.noSuchSensor);
+    final Dio dio = new Dio();
+    final endPointUrl = '/api/room';
+    try {
+      final response = await dio.get(
+        Consts.baseUrl + endPointUrl,
+        queryParameters: {'_id': room.id},
+        options: Options(
+          headers: {'Authorization': Consts.apiKey},
+        ),
+      );
+      List<int> activityData =
+          response.data['between_cleaning_plot'].cast<int>();
+      final timeDiffer = calculateTimestampDifference(
+          DateTime.parse(response.data['last_cleaned']),
+          DateTime.parse(response.data['last_update']));
+      final maxX = (timeDiffer / 20).ceil() * 20;
+      final maxY = (activityData.reduce(max) / 5).ceil() * 5;
+      final minY = activityData.reduce(min);
+      final dateFormat = new DateFormat('dd/MM hh:mm');
+      final xTitles = [
+        dateFormat.format(DateTime.parse(response.data['last_cleaned'])),
+        dateFormat.format(DateTime.parse(response.data['last_cleaned'])
+            .add(Duration(seconds: maxX ~/ 5))),
+        dateFormat.format(DateTime.parse(response.data['last_cleaned'])
+            .add(Duration(seconds: maxX ~/ 5 * 2))),
+        dateFormat.format(DateTime.parse(response.data['last_cleaned'])
+            .add(Duration(seconds: maxX ~/ 5 * 3))),
+        dateFormat.format(DateTime.parse(response.data['last_cleaned'])
+            .add(Duration(seconds: maxX ~/ 5 * 4))),
+        dateFormat.format(DateTime.parse(response.data['last_cleaned'])
+            .add(Duration(seconds: maxX))),
+      ];
+      final yTitles = [
+        minY.toInt().toString(),
+        (maxY / 5 * 1).toInt().toString(),
+        (maxY / 5 * 2).toInt().toString(),
+        (maxY / 5 * 3).toInt().toString(),
+        (maxY / 5 * 4).toInt().toString(),
+        maxY.toInt().toString(),
+      ];
+      activityGraphData = {
+        'maxY': maxY,
+        'minY': minY,
+        'maxX': maxX,
+        'minX': 0,
+        'xTitles': xTitles,
+        'yTitles': yTitles,
+        'activityData': activityData,
+      };
+      notifyListeners();
+    } catch (error) {
+      if (error.error is SocketException) throw Exception(Consts.internetError);
+      throw Exception(Consts.unindentifiedError);
+    }
+  }
+
+  int calculateTimestampDifference(DateTime startTime, DateTime endTime) {
+    return endTime.difference(startTime).inSeconds;
+  }
+
   Uint8ClampedList _convert64to8(Uint64List array) {
     var min, max, pix;
     var minRaw = 9223372036854775807;
@@ -117,7 +182,7 @@ class SingleRoomProvider extends ChangeNotifier {
         maxRaw = pix;
       }
     }
-    max = maxRaw / 30;
+    max = maxRaw;
     min = minRaw;
     var pix1;
     List<int> imP = [];

@@ -1,5 +1,4 @@
 import 'package:cleaner_app/consts.dart';
-import 'package:cleaner_app/helpers/custom_dialog.dart';
 import 'package:cleaner_app/route_names.dart';
 import 'package:cleaner_app/screens/cleaning_screen.dart';
 import 'package:flutter/material.dart';

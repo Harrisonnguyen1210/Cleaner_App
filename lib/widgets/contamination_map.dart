@@ -14,7 +14,6 @@ class ContaminationMap extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(15),
       child: Container(
-        color: Colors.red,
         height: screenSize.height * 0.4,
         width: double.infinity,
         child: imageData != null

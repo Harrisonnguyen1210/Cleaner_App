@@ -26,11 +26,21 @@ class _CleaningScreenContentState extends State<CleaningScreenContent>
     final singleRoomProvider =
         Provider.of<SingleRoomProvider>(context, listen: false);
     singleRoomProvider.fetchContaminationMap().then((_) {
-      setState(() {
-        _isLoading = false;
+      singleRoomProvider.fetchActivityGraph().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      }).catchError((error) {
+        ErrorDialog.showErrorDialog(context, error.toString());
+        setState(() {
+          _isLoading = false;
+        });
       });
     }).catchError((error) {
       ErrorDialog.showErrorDialog(context, error.toString());
+      setState(() {
+        _isLoading = false;
+      });
     });
   }
 
@@ -94,19 +104,14 @@ class _CleaningScreenContentState extends State<CleaningScreenContent>
                       ),
                       ContaminationMap(),
                       Padding(
-                        padding: const EdgeInsets.only(top: 32, bottom: 8),
+                        padding: const EdgeInsets.only(top: 16, bottom: 8),
                         child: Text(
                           'Activity graph:',
                           style: TextStyle(
                               fontSize: 30, fontWeight: FontWeight.bold),
                         ),
                       ),
-                      //TODO: Add activity graph here
-                      Expanded(
-                        child: Container(
-                          color: Colors.white,
-                        ),
-                      )
+                      Expanded(child: ActivityGraph()),
                     ],
                   ),
                 ),

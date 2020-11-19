@@ -12,6 +12,7 @@ class Consts {
   static const greenIndex = Color(0xff28AE60);
   static const yellowIndex = Color(0xffF2C94C);
   static const redIndex = Color(0xffEB5756);
+  static const activityBackground = Color(0xff232d37);
 
   //http request
   static const String apiKey =
