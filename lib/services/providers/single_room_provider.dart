@@ -107,62 +107,45 @@ class SingleRoomProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchActivityGraph() async {
+  void fetchActivityGraph() {
     if (!room.hasSensor) throw Exception(Consts.noSuchSensor);
-    final Dio dio = new Dio();
-    final endPointUrl = '/api/room';
-    try {
-      final response = await dio.get(
-        Consts.baseUrl + endPointUrl,
-        queryParameters: {'_id': room.id},
-        options: Options(
-          headers: {'Authorization': Consts.apiKey},
-        ),
-      );
-      List<int> activityData =
-          response.data['between_cleaning_plot'].cast<int>();
-      final timeDiffer = calculateTimestampDifference(
-          DateTime.parse(response.data['last_cleaned']),
-          DateTime.parse(response.data['last_update']));
-      final maxX = (timeDiffer / 20).ceil() * 20;
-      final maxY = (activityData.reduce(max) / 5).ceil() * 5;
-      final minY = activityData.reduce(min);
-      final dateFormat = new DateFormat('dd/MM hh:mm');
-      final xTitles = [
-        dateFormat.format(DateTime.parse(response.data['last_cleaned'])),
-        dateFormat.format(DateTime.parse(response.data['last_cleaned'])
-            .add(Duration(seconds: maxX ~/ 5))),
-        dateFormat.format(DateTime.parse(response.data['last_cleaned'])
-            .add(Duration(seconds: maxX ~/ 5 * 2))),
-        dateFormat.format(DateTime.parse(response.data['last_cleaned'])
-            .add(Duration(seconds: maxX ~/ 5 * 3))),
-        dateFormat.format(DateTime.parse(response.data['last_cleaned'])
-            .add(Duration(seconds: maxX ~/ 5 * 4))),
-        dateFormat.format(DateTime.parse(response.data['last_cleaned'])
-            .add(Duration(seconds: maxX))),
-      ];
-      final yTitles = [
-        minY.toInt().toString(),
-        (maxY / 5 * 1).toInt().toString(),
-        (maxY / 5 * 2).toInt().toString(),
-        (maxY / 5 * 3).toInt().toString(),
-        (maxY / 5 * 4).toInt().toString(),
-        maxY.toInt().toString(),
-      ];
-      activityGraphData = {
-        'maxY': maxY,
-        'minY': minY,
-        'maxX': maxX,
-        'minX': 0,
-        'xTitles': xTitles,
-        'yTitles': yTitles,
-        'activityData': activityData,
-      };
-      notifyListeners();
-    } catch (error) {
-      if (error.error is SocketException) throw Exception(Consts.internetError);
-      throw Exception(Consts.unindentifiedError);
-    }
+    final timeDiffer = calculateTimestampDifference(
+        DateTime.parse(room.lastCleaned), DateTime.parse(room.lastUpdate));
+    final maxX = (timeDiffer / 20).ceil() * 20;
+    final maxY = (room.activityData.reduce(max) / 5).ceil() * 5;
+    final minY = room.activityData.reduce(min);
+    final dateFormat = new DateFormat('dd/MM hh:mm');
+    final xTitles = [
+      dateFormat.format(DateTime.parse(room.lastCleaned)),
+      dateFormat.format(
+          DateTime.parse(room.lastCleaned).add(Duration(seconds: maxX ~/ 5))),
+      dateFormat.format(DateTime.parse(room.lastCleaned)
+          .add(Duration(seconds: maxX ~/ 5 * 2))),
+      dateFormat.format(DateTime.parse(room.lastCleaned)
+          .add(Duration(seconds: maxX ~/ 5 * 3))),
+      dateFormat.format(DateTime.parse(room.lastCleaned)
+          .add(Duration(seconds: maxX ~/ 5 * 4))),
+      dateFormat.format(
+          DateTime.parse(room.lastCleaned).add(Duration(seconds: maxX))),
+    ];
+    final yTitles = [
+      minY.toInt().toString(),
+      (maxY / 5 * 1).toInt().toString(),
+      (maxY / 5 * 2).toInt().toString(),
+      (maxY / 5 * 3).toInt().toString(),
+      (maxY / 5 * 4).toInt().toString(),
+      maxY.toInt().toString(),
+    ];
+    activityGraphData = {
+      'maxY': maxY,
+      'minY': minY,
+      'maxX': maxX,
+      'minX': 0,
+      'xTitles': xTitles,
+      'yTitles': yTitles,
+      'activityData': room.activityData,
+    };
+    notifyListeners();
   }
 
   int calculateTimestampDifference(DateTime startTime, DateTime endTime) {

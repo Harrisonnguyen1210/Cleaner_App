@@ -3,6 +3,7 @@ import 'package:cleaner_app/helpers/error_dialog.dart';
 import 'package:cleaner_app/route_names.dart';
 import 'package:cleaner_app/services/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class RoomTable extends StatefulWidget {
@@ -41,6 +42,7 @@ class _RoomTableState extends State<RoomTable> {
     final screenSize = MediaQuery.of(context).size;
     final roomsProvider = Provider.of<RoomsProvider>(context);
     final assignedRooms = roomsProvider.rooms;
+    final dateFormat = new DateFormat('dd-MM-yyyy hh:mm');
 
     return _isLoading
         ? Center(
@@ -88,8 +90,10 @@ class _RoomTableState extends State<RoomTable> {
                     cells: [
                       DataCell(Text(assignedRooms[index].name)),
                       DataCell(
-                        Text(assignedRooms[index].lastCleaned ??
-                            '2020-10-21 14:02:13'),
+                        Text(assignedRooms[index].lastCleaned != 'unknown'
+                            ? dateFormat.format(DateTime.parse(
+                                assignedRooms[index].lastCleaned))
+                            : assignedRooms[index].lastCleaned),
                       ),
                       DataCell(
                         Container(

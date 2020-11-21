@@ -26,15 +26,9 @@ class _CleaningScreenContentState extends State<CleaningScreenContent>
     final singleRoomProvider =
         Provider.of<SingleRoomProvider>(context, listen: false);
     singleRoomProvider.fetchContaminationMap().then((_) {
-      singleRoomProvider.fetchActivityGraph().then((_) {
-        setState(() {
-          _isLoading = false;
-        });
-      }).catchError((error) {
-        ErrorDialog.showErrorDialog(context, error.toString());
-        setState(() {
-          _isLoading = false;
-        });
+      singleRoomProvider.fetchActivityGraph();
+      setState(() {
+        _isLoading = false;
       });
     }).catchError((error) {
       ErrorDialog.showErrorDialog(context, error.toString());

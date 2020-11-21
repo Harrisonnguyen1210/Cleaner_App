@@ -62,12 +62,28 @@ class RoomsProvider extends ChangeNotifier {
         options: Options(headers: {'Authorization': Consts.apiKey}),
       );
       final responseJson = response.data as List<dynamic>;
-      responseJson.forEach((room) {
-        roomList.add(Room.fromJson(room));
-      });
+      for (dynamic room in responseJson) {
+        roomList.add(await _fetchRoom(room['_id']));
+      }
       _rooms = roomList;
       notifyListeners();
       return _rooms;
+    } catch (error) {
+      if (error.error is SocketException) throw Exception(Consts.internetError);
+      throw Exception(Consts.unindentifiedError);
+    }
+  }
+
+  Future<Room> _fetchRoom(String roomId) async {
+    final Dio dio = new Dio();
+    final endPointUrl = '/api/room';
+    try {
+      final roomJson = await dio.get(
+        Consts.baseUrl + endPointUrl,
+        queryParameters: {'_id': roomId},
+        options: Options(headers: {'Authorization': Consts.apiKey}),
+      );
+      return Room.fromJson(roomJson.data);
     } catch (error) {
       if (error.error is SocketException) throw Exception(Consts.internetError);
       throw Exception(Consts.unindentifiedError);

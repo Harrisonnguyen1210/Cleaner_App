@@ -9,23 +9,26 @@ class Room {
       hospital,
       roomType,
       patient,
-      lastCleaned;
+      lastCleaned,
+      lastUpdate;
   final bool isCleaning, hasSensor;
   final num contaminationIndex;
+  final List<int> activityData;
 
-  Room({
-    @required this.id,
-    @required this.name,
-    @required this.floor,
-    @required this.building,
-    @required this.hospital,
-    @required this.isCleaning,
-    @required this.contaminationIndex,
-    @required this.patient,
-    @required this.roomType,
-    @required this.lastCleaned,
-    @required this.hasSensor
-  });
+  Room(
+      {@required this.id,
+      @required this.name,
+      @required this.floor,
+      @required this.building,
+      @required this.hospital,
+      @required this.isCleaning,
+      @required this.contaminationIndex,
+      @required this.patient,
+      @required this.roomType,
+      @required this.lastCleaned,
+      @required this.lastUpdate,
+      @required this.hasSensor,
+      @required this.activityData});
 
   Color get contaminationColor {
     if (contaminationIndex <= 0.3)
@@ -54,8 +57,11 @@ class Room {
       name: room['name'],
       patient: room['patient'] == '<empty>' ? '0' : room['patient'],
       lastCleaned: room['last_cleaned'] ?? 'unknown',
-      roomType: room['room_type'] == '<empty>' ? 'Normal room' : room['room_type'],
-      hasSensor: room['sensor_id'] != null ? true : false
+      lastUpdate: room['last_update'] ?? 'unknown',
+      roomType:
+          room['room_type'] == '<empty>' ? 'Normal room' : room['room_type'],
+      hasSensor: room['sensor_id'] != null ? true : false,
+      activityData: room['between_cleaning_plot'] != null ? room['between_cleaning_plot'].cast<int>() : [],
     );
   }
 }
