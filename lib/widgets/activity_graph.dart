@@ -143,7 +143,7 @@ class _ActivityGraphState extends State<ActivityGraph> {
       ),
       borderData: FlBorderData(
         show: true,
-        border: Border.all(color: Consts.textGrey, width: 1),
+        border: Border.all(color: Color(0xff37434d), width: 1),
       ),
       minX: activityGraphData['minX'].toDouble(),
       maxX: activityGraphData['maxX'].toDouble(),

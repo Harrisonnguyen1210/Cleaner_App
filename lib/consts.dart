@@ -26,6 +26,8 @@ class Consts {
       'There is a problem at the moment. Please try again later';
   static const String reportError =
       'Possible invalid report data. Please check room number or try again later';
+  static const String notEnoughData =
+      'No activity graph available. Not enough data.';
 
   //navigator key
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

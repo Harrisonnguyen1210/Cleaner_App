@@ -17,7 +17,7 @@ class ContaminationMap extends StatelessWidget {
         height: screenSize.height * 0.4,
         width: double.infinity,
         child: imageData != null
-            ? Image.memory(imageData, fit: BoxFit.cover)
+            ? Image.memory(imageData, fit: BoxFit.contain)
             : Stack(
               fit: StackFit.expand,
                 alignment: Alignment.center,

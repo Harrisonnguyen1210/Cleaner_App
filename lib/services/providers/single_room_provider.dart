@@ -58,7 +58,7 @@ class SingleRoomProvider extends ChangeNotifier {
         }
       }
       Bitmap bitmap =
-          Bitmap.fromHeadless(72, (imgArr.length / 8 / 72).round(), imgArr);
+          Bitmap.fromHeadless(72, (imgArr.length / 4 / 72).round(), imgArr);
       _imageData = bitmap.buildHeaded();
       notifyListeners();
     } catch (error) {
@@ -108,13 +108,16 @@ class SingleRoomProvider extends ChangeNotifier {
   }
 
   void fetchActivityGraph() {
-    if (!room.hasSensor) throw Exception(Consts.noSuchSensor);
+    if (!room.hasSensor)
+      throw Exception(Consts.noSuchSensor);
+    if (room.activityData.isEmpty)
+      throw Exception(Consts.notEnoughData);
     final timeDiffer = calculateTimestampDifference(
         DateTime.parse(room.lastCleaned), DateTime.parse(room.lastUpdate));
     final maxX = (timeDiffer / 20).ceil() * 20;
     final maxY = (room.activityData.reduce(max) / 5).ceil() * 5;
     final minY = room.activityData.reduce(min);
-    final dateFormat = new DateFormat('dd/MM hh:mm');
+    final dateFormat = room.activityData.length <= 10 ? DateFormat('hh:mm') : DateFormat('dd/MM hh:mm');
     final xTitles = [
       dateFormat.format(DateTime.parse(room.lastCleaned)),
       dateFormat.format(
