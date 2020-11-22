@@ -34,7 +34,7 @@ class AuthProvider extends ChangeNotifier {
       });
       _cleanerList = cleanerList;
     } catch (error) {
-      if (error.error is SocketException) throw Exception(Consts.internetError);
+      if (error.error != null && error.error is SocketException) throw Exception(Consts.internetError);
       throw Exception(Consts.unindentifiedError);
     }
   }

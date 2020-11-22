@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
@@ -62,13 +63,38 @@ class SingleRoomProvider extends ChangeNotifier {
       _imageData = bitmap.buildHeaded();
       notifyListeners();
     } catch (error) {
-      if (error.error is SocketException) throw Exception(Consts.internetError);
+      if (error.error != null && error.error is SocketException)
+        throw Exception(Consts.internetError);
+      throw Exception(Consts.unindentifiedError);
+    }
+  }
+
+  Future<void> _fetchCleaningMap() async {
+    final Dio dio = new Dio();
+    final endPointUrl = '/api/room/heatmap';
+    try {
+      final response = await dio.get(
+        Consts.baseUrl + endPointUrl,
+        queryParameters: {'_id': room.id, 'type': 'clean'},
+        options: Options(
+          responseType: ResponseType.bytes,
+          headers: {'Authorization': Consts.apiKey},
+          contentType: 'application/octet-stream',
+        ),
+      );
+      Uint64List imageDataInUint64 = response.data.buffer.asUint64List();
+    } catch (error) {
+      if (error.error != null && error.error is SocketException)
+        throw Exception(Consts.internetError);
       throw Exception(Consts.unindentifiedError);
     }
   }
 
   Future<void> startCleaning() async {
     if (!room.hasSensor) throw Exception(Consts.noSuchSensor);
+    _isCleaning = true;
+    notifyListeners();
+    const fetchInterval = const Duration(seconds: 1);
     final Dio dio = new Dio();
     final endPointUrl = '/api/room/startcleaning';
     try {
@@ -79,12 +105,15 @@ class SingleRoomProvider extends ChangeNotifier {
           headers: {'Authorization': Consts.apiKey},
         ),
       );
+      Timer.periodic(fetchInterval, (Timer timer) async {
+        await _fetchCleaningMap();
+        if (!isCleaning) timer.cancel();
+      });
     } catch (error) {
-      if (error.error is SocketException) throw Exception(Consts.internetError);
+      if (error.error != null && error.error is SocketException)
+        throw Exception(Consts.internetError);
       throw Exception(Consts.unindentifiedError);
     }
-    _isCleaning = true;
-    notifyListeners();
   }
 
   Future<void> stopCleaning() async {
@@ -100,7 +129,8 @@ class SingleRoomProvider extends ChangeNotifier {
         ),
       );
     } catch (error) {
-      if (error.error is SocketException) throw Exception(Consts.internetError);
+      if (error.error != null && error.error is SocketException)
+        throw Exception(Consts.internetError);
       throw Exception(Consts.unindentifiedError);
     }
     _isCleaning = false;
@@ -108,16 +138,16 @@ class SingleRoomProvider extends ChangeNotifier {
   }
 
   void fetchActivityGraph() {
-    if (!room.hasSensor)
-      throw Exception(Consts.noSuchSensor);
-    if (room.activityData.isEmpty)
-      throw Exception(Consts.notEnoughData);
+    if (!room.hasSensor) throw Exception(Consts.noSuchSensor);
+    if (room.activityData.isEmpty) throw Exception(Consts.notEnoughData);
     final timeDiffer = calculateTimestampDifference(
         DateTime.parse(room.lastCleaned), DateTime.parse(room.lastUpdate));
     final maxX = (timeDiffer / 20).ceil() * 20;
     final maxY = (room.activityData.reduce(max) / 5).ceil() * 5;
     final minY = room.activityData.reduce(min);
-    final dateFormat = room.activityData.length <= 10 ? DateFormat('hh:mm') : DateFormat('dd/MM hh:mm');
+    final dateFormat = room.activityData.length <= 10
+        ? DateFormat('hh:mm')
+        : DateFormat('dd/MM hh:mm');
     final xTitles = [
       dateFormat.format(DateTime.parse(room.lastCleaned)),
       dateFormat.format(
