@@ -19,7 +19,28 @@ class SingleRoomProvider extends ChangeNotifier {
 
   Uint8List _imageData;
 
+  Uint64List _imageDataInUint64;
+
+  double _scaling = 1;
+
   Uint8List get imageData {
+    final List<Uint8List> colorMap = _initColorMaps();
+    final imageDataInUint8 = _convert64to8(_imageDataInUint64);
+    var imgArr = Uint8List(imageDataInUint8.length * 4);
+    if (imageDataInUint8 != null && imageDataInUint8.isNotEmpty) {
+      var byteIdx = 0;
+      for (var imgIdx = 0; imgIdx < imgArr.length; imgIdx += 4) {
+        var grayValue = imageDataInUint8[byteIdx];
+        imgArr[imgIdx] = colorMap[0][grayValue]; // R value
+        imgArr[imgIdx + 1] = colorMap[1][grayValue]; // G value
+        imgArr[imgIdx + 2] = colorMap[2][grayValue]; // B value
+        imgArr[imgIdx + 3] = 255; // Alpha value
+        byteIdx++;
+      }
+    }
+    Bitmap bitmap =
+        Bitmap.fromHeadless(72, (imgArr.length / 4 / 72).round(), imgArr);
+    _imageData = bitmap.buildHeaded();
     return _imageData;
   }
 
@@ -29,11 +50,15 @@ class SingleRoomProvider extends ChangeNotifier {
     return _isCleaning;
   }
 
+  void updateScaling(double scale) {
+    _scaling = scale;
+    notifyListeners();
+  }
+
   Future<void> fetchContaminationMap() async {
     if (!room.hasSensor) return;
     final Dio dio = new Dio();
     final endPointUrl = '/api/room/heatmap';
-    final List<Uint8List> colorMap = _initColorMaps();
     try {
       final response = await dio.get(
         Consts.baseUrl + endPointUrl,
@@ -44,23 +69,7 @@ class SingleRoomProvider extends ChangeNotifier {
           contentType: 'application/octet-stream',
         ),
       );
-      Uint64List imageDataInUint64 = response.data.buffer.asUint64List();
-      final imageDataInUint8 = _convert64to8(imageDataInUint64);
-      var imgArr = Uint8List(imageDataInUint8.length * 4);
-      if (imageDataInUint8 != null && imageDataInUint8.isNotEmpty) {
-        var byteIdx = 0;
-        for (var imgIdx = 0; imgIdx < imgArr.length; imgIdx += 4) {
-          var grayValue = imageDataInUint8[byteIdx];
-          imgArr[imgIdx] = colorMap[0][grayValue]; // R value
-          imgArr[imgIdx + 1] = colorMap[1][grayValue]; // G value
-          imgArr[imgIdx + 2] = colorMap[2][grayValue]; // B value
-          imgArr[imgIdx + 3] = 255; // Alpha value
-          byteIdx++;
-        }
-      }
-      Bitmap bitmap =
-          Bitmap.fromHeadless(72, (imgArr.length / 4 / 72).round(), imgArr);
-      _imageData = bitmap.buildHeaded();
+      _imageDataInUint64 = response.data.buffer.asUint64List();
       notifyListeners();
     } catch (error) {
       if (error.error != null && error.error is SocketException)
@@ -82,7 +91,8 @@ class SingleRoomProvider extends ChangeNotifier {
           contentType: 'application/octet-stream',
         ),
       );
-      Uint64List imageDataInUint64 = response.data.buffer.asUint64List();
+      _imageDataInUint64 = response.data.buffer.asUint64List();
+      notifyListeners();
     } catch (error) {
       if (error.error != null && error.error is SocketException)
         throw Exception(Consts.internetError);
@@ -198,7 +208,7 @@ class SingleRoomProvider extends ChangeNotifier {
         maxRaw = pix;
       }
     }
-    max = maxRaw;
+    max = maxRaw / _scaling;
     min = minRaw;
     var pix1;
     List<int> imP = [];

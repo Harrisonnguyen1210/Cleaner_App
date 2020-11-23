@@ -18,6 +18,7 @@ class CleaningScreenContent extends StatefulWidget {
 class _CleaningScreenContentState extends State<CleaningScreenContent>
     with TickerProviderStateMixin {
   bool _isLoading = false;
+  double _sliderValue = 1.0;
 
   @override
   void initState() {
@@ -63,6 +64,15 @@ class _CleaningScreenContentState extends State<CleaningScreenContent>
       (_) => false,
       arguments: room,
     );
+  }
+
+  void sliderOnChanged(value) {
+    final singleRoomProvider =
+        Provider.of<SingleRoomProvider>(context, listen: false);
+    singleRoomProvider.updateScaling(value);
+    setState(() {
+      _sliderValue = value;
+    });
   }
 
   @override
@@ -144,7 +154,23 @@ class _CleaningScreenContentState extends State<CleaningScreenContent>
                       roomInfo: currentRoom.patientNumber,
                       icon: Icons.person,
                     ),
-                    SizedBox(height: 80),
+                    SizedBox(height: 25),
+                    Text(
+                      'Map scaling:',
+                      style: TextStyle(
+                        color: Consts.primaryBlue,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Slider(
+                      activeColor: Consts.primaryBlue,
+                      value: _sliderValue,
+                      onChanged: (value) => sliderOnChanged(value),
+                      min: 1,
+                      max: 100,
+                    ),
+                    SizedBox(height: 60),
                     isCleaning
                         ? SpinKitWave(
                             size: 30.0,
