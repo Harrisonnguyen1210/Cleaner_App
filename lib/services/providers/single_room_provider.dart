@@ -24,6 +24,7 @@ class SingleRoomProvider extends ChangeNotifier {
   double _scaling = 1;
 
   Uint8List get imageData {
+    if (!room.hasSensor) return _imageData;
     final List<Uint8List> colorMap = _initColorMaps();
     final imageDataInUint8 = _convert64to8(_imageDataInUint64);
     var imgArr = Uint8List(imageDataInUint8.length * 4);
