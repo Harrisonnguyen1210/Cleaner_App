@@ -1,4 +1,5 @@
 import 'package:cleaner_app/consts.dart';
+import 'package:cleaner_app/helpers/error_dialog.dart';
 import 'package:cleaner_app/route_names.dart';
 import 'package:cleaner_app/services/providers/providers.dart';
 import 'package:flutter/material.dart';
@@ -22,15 +23,11 @@ class AppDrawer extends StatelessWidget {
       'title': 'REPORT',
       'route': RouteNames.report,
     },
-    {
-      'icon': Icons.logout,
-      'title': 'LOGOUT',
-      'route': RouteNames.logout
-    }
+    {'icon': Icons.logout, 'title': 'LOGOUT', 'route': RouteNames.logout}
   ];
   AppDrawer({Key key, this.navigatorKey}) : super(key: key);
 
-  Widget _buildDrawerItem(int index, DrawerStateProvider drawerStateProvider) {
+  Widget _buildDrawerItem(int index, DrawerStateProvider drawerStateProvider, BuildContext context) {
     return Container(
       color: drawerStateProvider.getCurrentDrawer == index
           ? Consts.primaryBlue
@@ -39,9 +36,13 @@ class AppDrawer extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            drawerStateProvider.setCurrentDrawer(index);
-            navigatorKey.currentState.pushNamedAndRemoveUntil(
-                _drawerItemData[index]['route'], (_) => false);
+            if (drawerStateProvider.canBeNavigated) {
+              drawerStateProvider.setCurrentDrawer(index);
+              navigatorKey.currentState.pushNamedAndRemoveUntil(
+                  _drawerItemData[index]['route'], (_) => false);
+            } else if (drawerStateProvider.getCurrentDrawer == 0) {
+              ErrorDialog.showErrorDialog(context, Consts.pleaseFinishCleaning);
+            }
           },
           child: Container(
             height: 80,
@@ -93,7 +94,7 @@ class AppDrawer extends StatelessWidget {
                 .asMap()
                 .entries
                 .map((mapEntry) =>
-                    _buildDrawerItem(mapEntry.key, drawerStateProvider))
+                    _buildDrawerItem(mapEntry.key, drawerStateProvider, context))
                 .toList()
           ],
         ),

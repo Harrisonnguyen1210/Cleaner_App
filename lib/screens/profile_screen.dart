@@ -11,7 +11,6 @@ class ProfileScreen extends StatelessWidget {
   void _navigateToOverviewScreen(BuildContext context) {
     final drawerStateProvider =
         Provider.of<DrawerStateProvider>(context, listen: false);
-
     drawerStateProvider.setCurrentDrawer(0);
     Consts.navigatorKey.currentState
         .pushNamedAndRemoveUntil(RouteNames.overview, (_) => false);

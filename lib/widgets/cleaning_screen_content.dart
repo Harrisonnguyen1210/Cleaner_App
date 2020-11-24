@@ -39,17 +39,30 @@ class _CleaningScreenContentState extends State<CleaningScreenContent>
     });
   }
 
+  void _startCleaning(SingleRoomProvider singleRoomProvider,
+      DrawerStateProvider drawerStateProvider) {
+    drawerStateProvider.setCanBeNavigated(false);
+    singleRoomProvider.startCleaning();
+  }
+
+  void _stopCleaning(SingleRoomProvider singleRoomProvider, DrawerStateProvider drawerStateProvider) {
+    singleRoomProvider.stopCleaning().then((_) {
+      drawerStateProvider.setCanBeNavigated(true);
+      _navigateToReportScreen(singleRoomProvider.room);
+    });
+  }
+
   void _onCleaningButtonClicked() {
     final singleRoomProvider =
         Provider.of<SingleRoomProvider>(context, listen: false);
+    final drawerStateProvider =
+        Provider.of<DrawerStateProvider>(context, listen: false);
     CustomDialog.showCustomDialog(
       context,
       'Do you want to ${singleRoomProvider.isCleaning ? 'stop' : 'start'} cleaning?',
       () => singleRoomProvider.isCleaning
-          ? singleRoomProvider
-              .stopCleaning()
-              .then((_) => _navigateToReportScreen(singleRoomProvider.room))
-          : singleRoomProvider.startCleaning(),
+          ? _stopCleaning(singleRoomProvider, drawerStateProvider)
+          : _startCleaning(singleRoomProvider, drawerStateProvider),
     );
   }
 
