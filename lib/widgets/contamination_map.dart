@@ -23,7 +23,7 @@ class ContaminationMap extends StatelessWidget {
             ? Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.memory(imageData, fit: BoxFit.contain),
+                  Image.memory(imageData, fit: BoxFit.contain, gaplessPlayback: true),
                   imageCleaningData != null
                       ? ColorFiltered(
                           colorFilter: ColorFilter.mode(

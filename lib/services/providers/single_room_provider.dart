@@ -25,7 +25,7 @@ class SingleRoomProvider extends ChangeNotifier {
   }
 
   Uint8List get imageData {
-    if (!room.hasSensor) return null;
+    if (!room.hasSensor || _imageDataInUint64 == null) return null;
     return _buildImageData(_imageDataInUint64);
   }
 
@@ -54,11 +54,12 @@ class SingleRoomProvider extends ChangeNotifier {
       );
       _imageDataInUint64 = response.data.buffer.asUint64List();
       notifyListeners();
+    } on DioError catch (error) {
+      if (error.type == DioErrorType.DEFAULT && error.error is SocketException)
+        throw Exception(Consts.internetError);
+      else
+        throw Exception(Consts.unindentifiedError);
     } catch (error) {
-      if (error.error != null) {
-        if (error.error is SocketException)
-          throw Exception(Consts.internetError);
-      }
       throw Exception(Consts.unindentifiedError);
     }
   }
@@ -78,19 +79,18 @@ class SingleRoomProvider extends ChangeNotifier {
       );
       _imageCleaningDataInUint64 = response.data.buffer.asUint64List();
       notifyListeners();
+    } on DioError catch (error) {
+      if (error.type == DioErrorType.DEFAULT && error.error is SocketException)
+        throw Exception(Consts.internetError);
+      else
+        throw Exception(Consts.unindentifiedError);
     } catch (error) {
-      if (error.error != null) {
-        if (error.error is SocketException)
-          throw Exception(Consts.internetError);
-      }
       throw Exception(Consts.unindentifiedError);
     }
   }
 
   Future<void> startCleaning() async {
     if (!room.hasSensor) throw Exception(Consts.noSuchSensor);
-    _isCleaning = true;
-    notifyListeners();
     const fetchInterval = const Duration(seconds: 3);
     final Dio dio = new Dio();
     final endPointUrl = '/api/room/startcleaning';
@@ -102,6 +102,8 @@ class SingleRoomProvider extends ChangeNotifier {
           headers: {'Authorization': Consts.apiKey},
         ),
       );
+      _isCleaning = true;
+      notifyListeners();
       Timer.periodic(fetchInterval, (Timer timer) async {
         if (!isCleaning) {
           timer.cancel();
@@ -109,11 +111,12 @@ class SingleRoomProvider extends ChangeNotifier {
         }
         await _fetchCleaningMap();
       });
+    } on DioError catch (error) {
+      if (error.type == DioErrorType.DEFAULT && error.error is SocketException)
+        throw Exception(Consts.internetError);
+      else
+        throw Exception(Consts.unindentifiedError);
     } catch (error) {
-      if (error.error != null) {
-        if (error.error is SocketException)
-          throw Exception(Consts.internetError);
-      }
       throw Exception(Consts.unindentifiedError);
     }
   }
@@ -130,11 +133,12 @@ class SingleRoomProvider extends ChangeNotifier {
           headers: {'Authorization': Consts.apiKey},
         ),
       );
+    } on DioError catch (error) {
+      if (error.type == DioErrorType.DEFAULT && error.error is SocketException)
+        throw Exception(Consts.internetError);
+      else
+        throw Exception(Consts.unindentifiedError);
     } catch (error) {
-      if (error.error != null) {
-        if (error.error is SocketException)
-          throw Exception(Consts.internetError);
-      }
       throw Exception(Consts.unindentifiedError);
     }
     _isCleaning = false;

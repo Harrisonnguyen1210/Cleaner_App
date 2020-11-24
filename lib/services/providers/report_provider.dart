@@ -21,11 +21,14 @@ class ReportProvider {
           'cleaning_succesful': reportedRoom.cleanSuccessful,
         }),
       );
+    } on DioError catch (error) {
+      if (error.type == DioErrorType.DEFAULT && error.error is SocketException)
+        throw Exception(Consts.internetError);
+      else if (error.type == DioErrorType.RESPONSE)
+        throw Exception(Consts.reportError);
+      else
+        throw Exception(Consts.unindentifiedError);
     } catch (error) {
-      if (error.error != null) {
-        if (error.error is SocketException)
-          throw Exception(Consts.internetError);
-      }
       throw Exception(Consts.unindentifiedError);
     }
   }

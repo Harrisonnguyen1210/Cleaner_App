@@ -33,11 +33,12 @@ class AuthProvider extends ChangeNotifier {
         cleanerList.add(Cleaner.fromJson(cleaner));
       });
       _cleanerList = cleanerList;
+    } on DioError catch (error) {
+      if (error.type == DioErrorType.DEFAULT && error.error is SocketException)
+        throw Exception(Consts.internetError);
+      else
+        throw Exception(Consts.unindentifiedError);
     } catch (error) {
-      if (error.error != null) {
-        if (error.error is SocketException)
-          throw Exception(Consts.internetError);
-      }
       throw Exception(Consts.unindentifiedError);
     }
   }

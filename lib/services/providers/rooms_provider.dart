@@ -68,11 +68,12 @@ class RoomsProvider extends ChangeNotifier {
       _rooms = roomList;
       notifyListeners();
       return _rooms;
+    } on DioError catch (error) {
+      if (error.type == DioErrorType.DEFAULT && error.error is SocketException)
+        throw Exception(Consts.internetError);
+      else
+        throw Exception(Consts.unindentifiedError);
     } catch (error) {
-      if (error.error != null) {
-        if (error.error is SocketException)
-          throw Exception(Consts.internetError);
-      }
       throw Exception(Consts.unindentifiedError);
     }
   }
@@ -87,11 +88,12 @@ class RoomsProvider extends ChangeNotifier {
         options: Options(headers: {'Authorization': Consts.apiKey}),
       );
       return Room.fromJson(roomJson.data);
+    } on DioError catch (error) {
+      if (error.type == DioErrorType.DEFAULT && error.error is SocketException)
+        throw Exception(Consts.internetError);
+      else
+        throw Exception(Consts.unindentifiedError);
     } catch (error) {
-      if (error.error != null) {
-        if (error.error is SocketException)
-          throw Exception(Consts.internetError);
-      }
       throw Exception(Consts.unindentifiedError);
     }
   }
