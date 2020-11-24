@@ -22,8 +22,11 @@ class ReportProvider {
         }),
       );
     } catch (error) {
-      if (error.error != null && error.error is SocketException) throw Exception(Consts.internetError);
-      throw Exception(Consts.reportError);
+      if (error.error != null) {
+        if (error.error is SocketException)
+          throw Exception(Consts.internetError);
+      }
+      throw Exception(Consts.unindentifiedError);
     }
   }
 }

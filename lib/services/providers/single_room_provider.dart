@@ -72,8 +72,10 @@ class SingleRoomProvider extends ChangeNotifier {
       _imageDataInUint64 = response.data.buffer.asUint64List();
       notifyListeners();
     } catch (error) {
-      if (error.error != null && error.error is SocketException)
-        throw Exception(Consts.internetError);
+      if (error.error != null) {
+        if (error.error is SocketException)
+          throw Exception(Consts.internetError);
+      }
       throw Exception(Consts.unindentifiedError);
     }
   }
@@ -94,8 +96,10 @@ class SingleRoomProvider extends ChangeNotifier {
       _imageDataInUint64 = response.data.buffer.asUint64List();
       notifyListeners();
     } catch (error) {
-      if (error.error != null && error.error is SocketException)
-        throw Exception(Consts.internetError);
+      if (error.error != null) {
+        if (error.error is SocketException)
+          throw Exception(Consts.internetError);
+      }
       throw Exception(Consts.unindentifiedError);
     }
   }
@@ -116,12 +120,17 @@ class SingleRoomProvider extends ChangeNotifier {
         ),
       );
       Timer.periodic(fetchInterval, (Timer timer) async {
+        if (!isCleaning) {
+          timer.cancel();
+          return;
+        }
         await _fetchCleaningMap();
-        if (!isCleaning) timer.cancel();
       });
     } catch (error) {
-      if (error.error != null && error.error is SocketException)
-        throw Exception(Consts.internetError);
+      if (error.error != null) {
+        if (error.error is SocketException)
+          throw Exception(Consts.internetError);
+      }
       throw Exception(Consts.unindentifiedError);
     }
   }
@@ -139,8 +148,10 @@ class SingleRoomProvider extends ChangeNotifier {
         ),
       );
     } catch (error) {
-      if (error.error != null && error.error is SocketException)
-        throw Exception(Consts.internetError);
+      if (error.error != null) {
+        if (error.error is SocketException)
+          throw Exception(Consts.internetError);
+      }
       throw Exception(Consts.unindentifiedError);
     }
     _isCleaning = false;

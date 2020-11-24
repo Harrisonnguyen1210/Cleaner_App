@@ -69,7 +69,10 @@ class RoomsProvider extends ChangeNotifier {
       notifyListeners();
       return _rooms;
     } catch (error) {
-      if (error.error != null && error.error is SocketException) throw Exception(Consts.internetError);
+      if (error.error != null) {
+        if (error.error is SocketException)
+          throw Exception(Consts.internetError);
+      }
       throw Exception(Consts.unindentifiedError);
     }
   }
@@ -85,7 +88,10 @@ class RoomsProvider extends ChangeNotifier {
       );
       return Room.fromJson(roomJson.data);
     } catch (error) {
-      if (error.error != null && error.error is SocketException) throw Exception(Consts.internetError);
+      if (error.error != null) {
+        if (error.error is SocketException)
+          throw Exception(Consts.internetError);
+      }
       throw Exception(Consts.unindentifiedError);
     }
   }
