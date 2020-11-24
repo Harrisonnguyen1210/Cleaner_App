@@ -1,14 +1,16 @@
+import 'dart:typed_data';
+
 import 'package:cleaner_app/consts.dart';
-import 'package:cleaner_app/services/providers/providers.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ContaminationMap extends StatelessWidget {
+  final Uint8List imageData;
+  final Uint8List imageCleaningData;
+
+  const ContaminationMap({Key key, this.imageData, this.imageCleaningData}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    final singleRoomProvider =
-        Provider.of<SingleRoomProvider>(context, listen: false);
-    final imageData = singleRoomProvider.imageData;
     final screenSize = MediaQuery.of(context).size;
 
     return ClipRRect(
@@ -17,9 +19,15 @@ class ContaminationMap extends StatelessWidget {
         height: screenSize.height * 0.4,
         width: double.infinity,
         child: imageData != null
-            ? Image.memory(imageData, fit: BoxFit.contain)
-            : Stack(
+            ? Stack(
               fit: StackFit.expand,
+                children: [
+                  //Image.memory(imageData, fit: BoxFit.contain),
+                  imageCleaningData != null ? Image.memory(imageCleaningData, fit: BoxFit.contain) : SizedBox.shrink(),
+                ],
+              )
+            : Stack(
+                fit: StackFit.expand,
                 alignment: Alignment.center,
                 children: [
                   ColorFiltered(

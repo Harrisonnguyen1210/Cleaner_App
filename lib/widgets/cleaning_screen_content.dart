@@ -106,7 +106,10 @@ class _CleaningScreenContentState extends State<CleaningScreenContent>
                               fontSize: 30, fontWeight: FontWeight.bold),
                         ),
                       ),
-                      ContaminationMap(),
+                      ContaminationMap(
+                        imageData: singleRoomProvider.imageData,
+                        imageCleaningData: singleRoomProvider.imageCleaningData,
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(top: 16, bottom: 8),
                         child: Text(

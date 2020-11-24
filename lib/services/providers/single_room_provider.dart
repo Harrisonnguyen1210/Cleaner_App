@@ -12,40 +12,22 @@ import 'package:intl/intl.dart';
 
 class SingleRoomProvider extends ChangeNotifier {
   final Room room;
-
   Map<String, dynamic> activityGraphData;
-
   SingleRoomProvider(this.room);
-
-  Uint8List _imageData;
-
-  Uint64List _imageDataInUint64;
-
   double _scaling = 1;
+  bool _isCleaning = false;
+  Uint64List _imageDataInUint64;
+  Uint64List _imageCleaningDataInUint64;
 
-  Uint8List get imageData {
-    if (!room.hasSensor) return _imageData;
-    final List<Uint8List> colorMap = _initColorMaps();
-    final imageDataInUint8 = _convert64to8(_imageDataInUint64);
-    var imgArr = Uint8List(imageDataInUint8.length * 4);
-    if (imageDataInUint8 != null && imageDataInUint8.isNotEmpty) {
-      var byteIdx = 0;
-      for (var imgIdx = 0; imgIdx < imgArr.length; imgIdx += 4) {
-        var grayValue = imageDataInUint8[byteIdx];
-        imgArr[imgIdx] = colorMap[0][grayValue]; // R value
-        imgArr[imgIdx + 1] = colorMap[1][grayValue]; // G value
-        imgArr[imgIdx + 2] = colorMap[2][grayValue]; // B value
-        imgArr[imgIdx + 3] = 255; // Alpha value
-        byteIdx++;
-      }
-    }
-    Bitmap bitmap =
-        Bitmap.fromHeadless(72, (imgArr.length / 4 / 72).round(), imgArr);
-    _imageData = bitmap.buildHeaded();
-    return _imageData;
+  Uint8List get imageCleaningData {
+    if (!room.hasSensor || _imageCleaningDataInUint64 == null) return null;
+    return _buildCleaningImageData(_imageCleaningDataInUint64);
   }
 
-  bool _isCleaning = false;
+  Uint8List get imageData {
+    if (!room.hasSensor) return null;
+    return _buildImageData(_imageDataInUint64);
+  }
 
   bool get isCleaning {
     return _isCleaning;
@@ -94,7 +76,7 @@ class SingleRoomProvider extends ChangeNotifier {
           contentType: 'application/octet-stream',
         ),
       );
-      _imageDataInUint64 = response.data.buffer.asUint64List();
+      _imageCleaningDataInUint64 = response.data.buffer.asUint64List();
       notifyListeners();
     } catch (error) {
       if (error.error != null) {
@@ -109,7 +91,7 @@ class SingleRoomProvider extends ChangeNotifier {
     if (!room.hasSensor) throw Exception(Consts.noSuchSensor);
     _isCleaning = true;
     notifyListeners();
-    const fetchInterval = const Duration(seconds: 1);
+    const fetchInterval = const Duration(seconds: 3);
     final Dio dio = new Dio();
     final endPointUrl = '/api/room/startcleaning';
     try {
@@ -267,5 +249,50 @@ class SingleRoomProvider extends ChangeNotifier {
       Uint8List.fromList(tableGreen),
       Uint8List.fromList(tableBlue)
     ];
+  }
+
+  Uint8List _buildImageData(Uint64List imageDataInUint64) {
+    final List<Uint8List> colorMap = _initColorMaps();
+    final imageDataInUint8 = _convert64to8(imageDataInUint64);
+    var imgArr = Uint8List(imageDataInUint8.length * 4);
+    if (imageDataInUint8 != null && imageDataInUint8.isNotEmpty) {
+      var byteIdx = 0;
+      for (var imgIdx = 0; imgIdx < imgArr.length; imgIdx += 4) {
+        var grayValue = imageDataInUint8[byteIdx];
+        imgArr[imgIdx] = colorMap[0][grayValue]; // R value
+        imgArr[imgIdx + 1] = colorMap[1][grayValue]; // G value
+        imgArr[imgIdx + 2] = colorMap[2][grayValue]; // B value
+        imgArr[imgIdx + 3] = 255;
+        byteIdx++;
+      }
+    }
+    Bitmap bitmap =
+        Bitmap.fromHeadless(72, (imgArr.length / 4 / 72).round(), imgArr);
+    return bitmap.buildHeaded();
+  }
+
+  Uint8List _buildCleaningImageData(Uint64List imageDataInUint64) {
+    final List<Uint8List> colorMap = _initColorMaps();
+    final imageDataInUint8 = _convert64to8(imageDataInUint64);
+    var imgArr = Uint8List(imageDataInUint8.length * 4);
+    if (imageDataInUint8 != null && imageDataInUint8.isNotEmpty) {
+      var byteIdx = 0;
+      for (var imgIdx = 0; imgIdx < imgArr.length; imgIdx += 4) {
+        var grayValue = imageDataInUint8[byteIdx];
+        imgArr[imgIdx] = colorMap[0][grayValue]; // R value
+        imgArr[imgIdx + 1] = colorMap[1][grayValue]; // G value
+        imgArr[imgIdx + 2] = colorMap[2][grayValue]; // B value
+        if (imgArr[imgIdx] == colorMap[0][0] &&
+            imgArr[imgIdx + 1] == colorMap[1][0] &&
+            imgArr[imgIdx + 2] == colorMap[2][0]) {
+          imgArr[imgIdx + 3] = 20; // Alpha value
+        } else
+          imgArr[imgIdx + 3] = 255;
+        byteIdx++;
+      }
+    }
+    Bitmap bitmap =
+        Bitmap.fromHeadless(72, (imgArr.length / 4 / 72).round(), imgArr);
+    return bitmap.buildHeaded();
   }
 }
