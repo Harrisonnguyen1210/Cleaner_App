@@ -13,24 +13,7 @@ class OverviewScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: CustomAppBar.getAppBar(
-        Container(
-          width: 220,
-          height: 50,
-          margin: EdgeInsets.only(left: 32),
-          padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-          alignment: Alignment.centerLeft,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            color: Consts.secondaryBlack,
-          ),
-          child: Row(
-            children: [
-              Icon(Icons.search),
-              SizedBox(width: 8),
-              Text('Search...'),
-            ],
-          ),
-        ),
+        SizedBox.shrink()
       ),
       body: Container(
         width: double.infinity,

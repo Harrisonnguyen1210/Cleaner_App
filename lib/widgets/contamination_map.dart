@@ -7,7 +7,8 @@ class ContaminationMap extends StatelessWidget {
   final Uint8List imageData;
   final Uint8List imageCleaningData;
 
-  const ContaminationMap({Key key, this.imageData, this.imageCleaningData}) : super(key: key);
+  const ContaminationMap({Key key, this.imageData, this.imageCleaningData})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +21,18 @@ class ContaminationMap extends StatelessWidget {
         width: double.infinity,
         child: imageData != null
             ? Stack(
-              fit: StackFit.expand,
+                fit: StackFit.expand,
                 children: [
-                  //Image.memory(imageData, fit: BoxFit.contain),
-                  imageCleaningData != null ? Image.memory(imageCleaningData, fit: BoxFit.contain) : SizedBox.shrink(),
+                  Image.memory(imageData, fit: BoxFit.contain),
+                  imageCleaningData != null
+                      ? ColorFiltered(
+                          colorFilter: ColorFilter.mode(
+                            Colors.greenAccent,
+                            BlendMode.modulate,
+                          ),
+                          child: Image.memory(imageCleaningData,
+                              fit: BoxFit.contain))
+                      : SizedBox.shrink(),
                 ],
               )
             : Stack(
