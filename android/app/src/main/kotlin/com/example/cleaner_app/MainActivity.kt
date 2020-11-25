@@ -1,4 +1,4 @@
-package com.example.cleaner_app
+package fi.metropolia.spotless
 
 import io.flutter.embedding.android.FlutterActivity
 
