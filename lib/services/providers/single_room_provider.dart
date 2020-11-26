@@ -18,6 +18,7 @@ class SingleRoomProvider extends ChangeNotifier {
   bool _isCleaning = false;
   Uint64List _imageDataInUint64;
   Uint64List _imageCleaningDataInUint64;
+  Uint8List _floorImage;
 
   Uint8List get imageCleaningData {
     if (!room.hasSensor || _imageCleaningDataInUint64 == null) return null;
@@ -27,6 +28,10 @@ class SingleRoomProvider extends ChangeNotifier {
   Uint8List get imageData {
     if (!room.hasSensor || _imageDataInUint64 == null) return null;
     return _buildImageData(_imageDataInUint64);
+  }
+
+  Uint8List get floorImage {
+    return _floorImage;
   }
 
   bool get isCleaning {
@@ -187,6 +192,32 @@ class SingleRoomProvider extends ChangeNotifier {
       'activityData': room.activityData,
     };
     notifyListeners();
+  }
+
+  Future<void> fetchFloorMap() async {
+    if (!room.hasSensor) return;
+    final Dio dio = new Dio();
+    final endPointUrl = '/api/room/floorplan';
+    try {
+      final response = await dio.get(
+        Consts.baseUrl + endPointUrl,
+        queryParameters: {'_id': room.id},
+        options: Options(
+          responseType: ResponseType.bytes,
+          headers: {'Authorization': Consts.apiKey},
+          contentType: 'image/png',
+        ),
+      );
+      _floorImage = response.data;
+      notifyListeners();
+    } on DioError catch (error) {
+      if (error.type == DioErrorType.DEFAULT && error.error is SocketException)
+        throw Exception(Consts.internetError);
+      else
+        throw Exception(Consts.unindentifiedError);
+    } catch (error) {
+      throw Exception(Consts.unindentifiedError);
+    }
   }
 
   int calculateTimestampDifference(DateTime startTime, DateTime endTime) {

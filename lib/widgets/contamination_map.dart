@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 class ContaminationMap extends StatelessWidget {
   final Uint8List imageData;
   final Uint8List imageCleaningData;
+  final Uint8List floorImage;
 
-  const ContaminationMap({Key key, this.imageData, this.imageCleaningData})
+  const ContaminationMap(
+      {Key key, this.imageData, this.imageCleaningData, this.floorImage})
       : super(key: key);
 
   @override
@@ -23,15 +25,29 @@ class ContaminationMap extends StatelessWidget {
             ? Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.memory(imageData, fit: BoxFit.contain, gaplessPlayback: true),
+                  Image.memory(
+                    imageData,
+                    fit: BoxFit.contain,
+                    gaplessPlayback: true,
+                  ),
                   imageCleaningData != null
                       ? ColorFiltered(
                           colorFilter: ColorFilter.mode(
                             Colors.greenAccent,
                             BlendMode.modulate,
                           ),
-                          child: Image.memory(imageCleaningData,
-                              fit: BoxFit.contain))
+                          child: Image.memory(
+                            imageCleaningData,
+                            fit: BoxFit.contain,
+                            gaplessPlayback: true,
+                          ))
+                      : SizedBox.shrink(),
+                  floorImage != null
+                      ? Image.memory(
+                          floorImage,
+                          fit: BoxFit.contain,
+                          gaplessPlayback: true,
+                        )
                       : SizedBox.shrink(),
                 ],
               )
