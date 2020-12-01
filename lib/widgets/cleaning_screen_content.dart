@@ -157,6 +157,7 @@ class _CleaningScreenContentState extends State<CleaningScreenContent>
                   child: Container(
                     margin: EdgeInsets.only(bottom: 32),
                     width: screenSize.width / 4.5,
+                    height: MediaQuery.of(context).size.height * 0.92,
                     child: Column(
                       children: [
                         RoomInfoTitle(),
