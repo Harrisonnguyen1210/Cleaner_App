@@ -14,11 +14,12 @@ class _HomeScreeenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final bool displayTabletLayout = MediaQuery.of(context).size.width > 500;
+    final screenSize = MediaQuery.of(context).size;
 
     return SafeArea(
       child: Row(
         children: [
-          if (displayTabletLayout) AppDrawer(navigatorKey: Consts.navigatorKey),
+          if (displayTabletLayout) Container(width: screenSize.width * 0.2, child: AppDrawer(navigatorKey: Consts.navigatorKey)),
           Expanded(
             child: Navigator(
               key: Consts.navigatorKey,

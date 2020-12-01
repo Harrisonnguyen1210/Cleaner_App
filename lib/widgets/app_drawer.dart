@@ -45,7 +45,7 @@ class AppDrawer extends StatelessWidget {
             }
           },
           child: Container(
-            height: 80,
+            height: MediaQuery.of(context).size.height * 0.08,
             child: Center(
               child: ListTile(
                 selected: drawerStateProvider.getCurrentDrawer == index,
@@ -76,7 +76,7 @@ class AppDrawer extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              height: 80,
+              height: MediaQuery.of(context).size.height * 0.08,
               child: Center(
                 child: ListTile(
                   leading: Icon(

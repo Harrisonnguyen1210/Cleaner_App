@@ -153,72 +153,77 @@ class _CleaningScreenContentState extends State<CleaningScreenContent>
                     ),
                   ),
                 ),
-                Container(
-                  width: screenSize.width / 4.5,
-                  child: Column(
-                    children: [
-                      RoomInfoTitle(),
-                      SizedBox(height: 30),
-                      RoomInfoDetail(
-                        roomInfoTitle: 'Hospital',
-                        roomInfo: hospitalsProvider.hospitals
-                            .where((hospital) =>
-                                hospital.id == currentRoom.hospital)
-                            .toList()[0]
-                            .name,
-                        icon: Icons.local_hospital,
-                      ),
-                      RoomInfoDetail(
-                        roomInfoTitle: 'Building',
-                        roomInfo: currentRoom.building,
-                        icon: Icons.house,
-                      ),
-                      RoomInfoDetail(
-                          roomInfoTitle: 'Floor',
-                          roomInfo: currentRoom.floor,
-                          icon: Icons.stacked_bar_chart),
-                      RoomInfoDetail(
-                        roomInfoTitle: 'Room Type',
-                        roomInfo: currentRoom.roomType,
-                        icon: Icons.category,
-                      ),
-                      RoomInfoDetail(
-                        roomInfoTitle: 'Patients in room',
-                        roomInfo: currentRoom.patientNumber,
-                        icon: Icons.person,
-                      ),
-                      SizedBox(height: 25),
-                      Text(
-                        'Map scaling:',
-                        style: TextStyle(
-                          color: Consts.primaryBlue,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
+                FittedBox(
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 32),
+                    width: screenSize.width / 4.5,
+                    child: Column(
+                      children: [
+                        RoomInfoTitle(),
+                        SizedBox(height: 30),
+                        RoomInfoDetail(
+                          roomInfoTitle: 'Hospital',
+                          roomInfo: hospitalsProvider.hospitals
+                              .where((hospital) =>
+                                  hospital.id == currentRoom.hospital)
+                              .toList()[0]
+                              .name,
+                          icon: Icons.local_hospital,
                         ),
-                      ),
-                      Slider(
-                        activeColor: Consts.primaryBlue,
-                        value: _sliderValue,
-                        onChanged: (value) => sliderOnChanged(value),
-                        min: 1,
-                        max: 100,
-                      ),
-                      SizedBox(height: 60),
-                      isCleaning
-                          ? SpinKitWave(
-                              size: 30.0,
-                              color: Consts.primaryBlue,
-                              controller: AnimationController(
-                                  vsync: this,
-                                  duration: const Duration(milliseconds: 1200)),
-                            )
-                          : SizedBox.shrink(),
-                      SizedBox(height: 20),
-                      CustomButton(
-                        title: isCleaning ? 'STOP CLEANING' : 'START CLEANING',
-                        onPress: _onCleaningButtonClicked,
-                      ),
-                    ],
+                        RoomInfoDetail(
+                          roomInfoTitle: 'Building',
+                          roomInfo: currentRoom.building,
+                          icon: Icons.house,
+                        ),
+                        RoomInfoDetail(
+                            roomInfoTitle: 'Floor',
+                            roomInfo: currentRoom.floor,
+                            icon: Icons.stacked_bar_chart),
+                        RoomInfoDetail(
+                          roomInfoTitle: 'Room Type',
+                          roomInfo: currentRoom.roomType,
+                          icon: Icons.category,
+                        ),
+                        RoomInfoDetail(
+                          roomInfoTitle: 'Patients',
+                          roomInfo: currentRoom.patientNumber,
+                          icon: Icons.person,
+                        ),
+                        SizedBox(height: 25),
+                        Text(
+                          'Map scaling:',
+                          style: TextStyle(
+                            color: Consts.primaryBlue,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Slider(
+                          activeColor: Consts.primaryBlue,
+                          value: _sliderValue,
+                          onChanged: (value) => sliderOnChanged(value),
+                          min: 1,
+                          max: 100,
+                        ),
+                        SizedBox(height: 60),
+                        isCleaning
+                            ? SpinKitWave(
+                                size: 30.0,
+                                color: Consts.primaryBlue,
+                                controller: AnimationController(
+                                    vsync: this,
+                                    duration:
+                                        const Duration(milliseconds: 1200)),
+                              )
+                            : SizedBox.shrink(),
+                        SizedBox(height: 20),
+                        CustomButton(
+                          title:
+                              isCleaning ? 'STOP CLEANING' : 'START CLEANING',
+                          onPress: _onCleaningButtonClicked,
+                        ),
+                      ],
+                    ),
                   ),
                 )
               ],

@@ -16,9 +16,9 @@ class _ProfileFormState extends State<ProfileForm> {
   @override
   void initState() {
     super.initState();
-    _phoneTextController.text = '0123456789';
-    _addressTextController.text = '1874  Ferrell Street, Finland';
-    _emailTextController.text = 'abc@gmail.com';
+    _phoneTextController.text = '';
+    _addressTextController.text = '';
+    _emailTextController.text = '';
   }
 
   @override

@@ -52,7 +52,6 @@ class _RoomTableState extends State<RoomTable> {
           )
         : Container(
             width: double.infinity,
-            height: screenSize.height / 2,
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: DataTable(

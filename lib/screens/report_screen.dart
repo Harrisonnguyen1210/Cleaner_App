@@ -77,13 +77,14 @@ class _ReportScreenState extends State<ReportScreen> {
   Widget build(BuildContext context) {
     final bool displayTabletLayout = MediaQuery.of(context).size.width > 500;
     final Room currentRoom = ModalRoute.of(context).settings.arguments;
+    final isSmallerScreen = MediaQuery.of(context).size.width <= 1194;
 
     return Scaffold(
-      appBar: CustomAppBar.getAppBar(null),
+      appBar: CustomAppBar.getAppBar(null, context),
       drawer: displayTabletLayout ? null : AppDrawer(),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(48.0),
+          padding: EdgeInsets.all(isSmallerScreen ? 32.0 : 48.0),
           child: Form(
             key: _form,
             child: Row(
@@ -97,11 +98,11 @@ class _ReportScreenState extends State<ReportScreen> {
                       Text(
                         'Fill your report',
                         style: TextStyle(
-                          fontSize: 50,
+                          fontSize: isSmallerScreen ? 40 : 50,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 48),
+                      SizedBox(height: isSmallerScreen ? 32.0 : 48.0),
                       Text(
                         'Room number:',
                         style: TextStyle(
@@ -147,7 +148,8 @@ class _ReportScreenState extends State<ReportScreen> {
                           );
                         },
                       ),
-                      SizedBox(height: 48),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02),
                       Text(
                         'Room overview:',
                         style: TextStyle(
@@ -193,7 +195,9 @@ class _ReportScreenState extends State<ReportScreen> {
                           );
                         },
                       ),
-                      SizedBox(height: 48),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.02,
+                      ),
                       Text(
                         'Comments:',
                         style: TextStyle(
@@ -272,7 +276,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 108),
+                      SizedBox(height: isSmallerScreen ? 77 : 108),
                       Padding(
                         padding: const EdgeInsets.only(left: 3),
                         child: Text(

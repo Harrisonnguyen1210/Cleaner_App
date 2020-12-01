@@ -8,7 +8,7 @@ class LogoutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: CustomAppBar.getAppBar(null),
+        appBar: CustomAppBar.getAppBar(null, context),
         body: Center(
           child: CustomButton(
             title: 'Logout',

@@ -16,9 +16,13 @@ class ContaminationMap extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(15),
-      child: Container(
+    return Container(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(16),
+          ),
+          color: Consts.activityBackground,
+        ),
         height: screenSize.height * 0.4,
         width: double.infinity,
         child: imageData != null
@@ -79,7 +83,6 @@ class ContaminationMap extends StatelessWidget {
                   )
                 ],
               ),
-      ),
-    );
+      );
   }
 }

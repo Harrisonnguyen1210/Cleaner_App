@@ -14,7 +14,7 @@ class CleaningScreen extends StatelessWidget {
 
     return Scaffold(
       key: Consts.cleaningScreenKey,
-      appBar: CustomAppBar.getAppBar(Text(currentRoom.name)),
+      appBar: CustomAppBar.getAppBar(Text(currentRoom.name), context),
       body: ChangeNotifierProvider(
         create: (buildContext) => SingleRoomProvider(currentRoom),
         child: CleaningScreenContent(),

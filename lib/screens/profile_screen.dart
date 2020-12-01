@@ -24,7 +24,7 @@ class ProfileScreen extends StatelessWidget {
     final assignedRooms = roomsProvider.rooms;
 
     return Scaffold(
-      appBar: CustomAppBar.getAppBar(null),
+      appBar: CustomAppBar.getAppBar(null, context),
       drawer: displayTabletLayout ? null : AppDrawer(),
       //Use CustomScrollView to fix content not fill entire screen issue
       body: CustomScrollView(

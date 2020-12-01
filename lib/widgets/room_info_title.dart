@@ -5,7 +5,7 @@ class RoomInfoTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
+      height: MediaQuery.of(context).size.height * 0.08,
       color: Consts.primaryBlue,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

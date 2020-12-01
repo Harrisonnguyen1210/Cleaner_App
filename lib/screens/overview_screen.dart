@@ -13,7 +13,8 @@ class OverviewScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: CustomAppBar.getAppBar(
-        SizedBox.shrink()
+        SizedBox.shrink(),
+        context,
       ),
       body: Container(
         width: double.infinity,
@@ -55,7 +56,7 @@ class OverviewScreen extends StatelessWidget {
             SizedBox(height: 32),
             SelectDropDownRow(),
             SizedBox(height: 32),
-            RoomTable()
+            Expanded(child: RoomTable())
           ],
         ),
       ),
