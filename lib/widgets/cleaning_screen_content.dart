@@ -206,17 +206,19 @@ class _CleaningScreenContentState extends State<CleaningScreenContent>
                           min: 1,
                           max: 100,
                         ),
-                        SizedBox(height: 60),
                         isCleaning
-                            ? SpinKitWave(
-                                size: 30.0,
-                                color: Consts.primaryBlue,
-                                controller: AnimationController(
+                            ? Container(
+                              height: 60,
+                              child: SpinKitWave(
+                                  size: 30.0,
+                                  color: Consts.primaryBlue,
+                                  controller: AnimationController(
                                     vsync: this,
-                                    duration:
-                                        const Duration(milliseconds: 1200)),
-                              )
-                            : SizedBox.shrink(),
+                                    duration: const Duration(milliseconds: 1200),
+                                  ),
+                                ),
+                            )
+                            : SizedBox(height: 60),
                         SizedBox(height: 20),
                         CustomButton(
                           title:

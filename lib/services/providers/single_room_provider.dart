@@ -20,12 +20,12 @@ class SingleRoomProvider extends ChangeNotifier {
   Uint8List _floorImage;
 
   Uint8List get imageCleaningData {
-    if (!room.hasSensor || _imageCleaningDataInUint64 == null) return null;
+    if ((!room.hasSensor && !room.isSimulated) || _imageCleaningDataInUint64 == null) return null;
     return _buildCleaningImageData(_imageCleaningDataInUint64);
   }
 
   Uint8List get imageData {
-    if (!room.hasSensor || _imageDataInUint64 == null) return null;
+    if ((!room.hasSensor && !room.isSimulated) || _imageDataInUint64 == null) return null;
     return _buildImageData(_imageDataInUint64);
   }
 
@@ -43,7 +43,7 @@ class SingleRoomProvider extends ChangeNotifier {
   }
 
   Future<void> fetchContaminationMap() async {
-    if (!room.hasSensor) return;
+    if (!room.hasSensor && !room.isSimulated) return;
     final Dio dio = new Dio();
     final endPointUrl = '/api/room/heatmap';
     try {
@@ -94,7 +94,7 @@ class SingleRoomProvider extends ChangeNotifier {
   }
 
   Future<void> startCleaning() async {
-    if (!room.hasSensor) throw Exception(Consts.noSuchSensor);
+    if (!room.hasSensor && !room.isSimulated) throw Exception(Consts.noSuchSensor);
     const fetchInterval = const Duration(seconds: 3);
     final Dio dio = new Dio();
     final endPointUrl = '/api/room/startcleaning';
@@ -126,7 +126,7 @@ class SingleRoomProvider extends ChangeNotifier {
   }
 
   Future<void> stopCleaning() async {
-    if (!room.hasSensor) throw Exception(Consts.noSuchSensor);
+    if (!room.hasSensor && !room.isSimulated) throw Exception(Consts.noSuchSensor);
     final Dio dio = new Dio();
     final endPointUrl = '/api/room/stopcleaning';
     try {
@@ -150,8 +150,8 @@ class SingleRoomProvider extends ChangeNotifier {
   }
 
   void fetchActivityGraph() {
-    if (!room.hasSensor) throw Exception(Consts.noSuchSensor);
-    if (room.activityData.isEmpty) throw Exception(Consts.notEnoughData);
+    if (!room.hasSensor && !room.isSimulated) throw Exception(Consts.noSuchSensor);
+    if (room.activityData.isEmpty || room.lastCleaned == 'unknown') throw Exception(Consts.notEnoughData);
 
     // Old implementation of activity graph
     // final timeDiffer = calculateTimestampDifference(
@@ -197,7 +197,7 @@ class SingleRoomProvider extends ChangeNotifier {
   }
 
   Future<void> fetchFloorMap() async {
-    if (!room.hasSensor) return;
+    if (!room.hasSensor && !room.isSimulated) return;
     final Dio dio = new Dio();
     final endPointUrl = '/api/room/floorplan';
     try {
