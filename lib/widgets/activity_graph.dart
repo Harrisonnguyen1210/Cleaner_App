@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//This class is unused. Needed to be erased later
 class ActivityGraph extends StatefulWidget {
   @override
   _ActivityGraphState createState() => _ActivityGraphState();

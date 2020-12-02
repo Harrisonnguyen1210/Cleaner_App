@@ -148,7 +148,7 @@ class _CleaningScreenContentState extends State<CleaningScreenContent>
                                 fontSize: 30, fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Expanded(child: ActivityGraph()),
+                        Expanded(child: SimpleLineChart()),
                       ],
                     ),
                   ),

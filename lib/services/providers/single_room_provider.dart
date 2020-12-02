@@ -8,7 +8,6 @@ import 'package:cleaner_app/consts.dart';
 import 'package:cleaner_app/models/models.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class SingleRoomProvider extends ChangeNotifier {
   final Room room;
@@ -153,42 +152,45 @@ class SingleRoomProvider extends ChangeNotifier {
   void fetchActivityGraph() {
     if (!room.hasSensor) throw Exception(Consts.noSuchSensor);
     if (room.activityData.isEmpty) throw Exception(Consts.notEnoughData);
-    final timeDiffer = calculateTimestampDifference(
-        DateTime.parse(room.lastCleaned), DateTime.parse(room.lastUpdate));
-    final maxX = (timeDiffer / 20).ceil() * 20;
-    final maxY = (room.activityData.reduce(max) / 5).ceil() * 5;
-    final minY = room.activityData.reduce(min);
-    final dateFormat = room.activityData.length <= 10
-        ? DateFormat('hh:mm')
-        : DateFormat('dd/MM hh:mm');
-    final xTitles = [
-      dateFormat.format(DateTime.parse(room.lastCleaned)),
-      dateFormat.format(
-          DateTime.parse(room.lastCleaned).add(Duration(seconds: maxX ~/ 5))),
-      dateFormat.format(DateTime.parse(room.lastCleaned)
-          .add(Duration(seconds: maxX ~/ 5 * 2))),
-      dateFormat.format(DateTime.parse(room.lastCleaned)
-          .add(Duration(seconds: maxX ~/ 5 * 3))),
-      dateFormat.format(DateTime.parse(room.lastCleaned)
-          .add(Duration(seconds: maxX ~/ 5 * 4))),
-      dateFormat.format(
-          DateTime.parse(room.lastCleaned).add(Duration(seconds: maxX))),
-    ];
-    final yTitles = [
-      minY.toInt().toString(),
-      (maxY / 5 * 1).toInt().toString(),
-      (maxY / 5 * 2).toInt().toString(),
-      (maxY / 5 * 3).toInt().toString(),
-      (maxY / 5 * 4).toInt().toString(),
-      maxY.toInt().toString(),
-    ];
+
+    // Old implementation of activity graph
+    // final timeDiffer = calculateTimestampDifference(
+    //     DateTime.parse(room.lastCleaned), DateTime.parse(room.lastUpdate));
+    // final maxX = (timeDiffer / 20).ceil() * 20;
+    // final maxY = (room.activityData.reduce(max) / 5).ceil() * 5;
+    // final minY = room.activityData.reduce(min);
+    // final dateFormat = room.activityData.length <= 10
+    //     ? DateFormat('hh:mm')
+    //     : DateFormat('dd/MM hh:mm');
+    // final xTitles = [
+    //   dateFormat.format(DateTime.parse(room.lastCleaned)),
+    //   dateFormat.format(
+    //       DateTime.parse(room.lastCleaned).add(Duration(seconds: maxX ~/ 5))),
+    //   dateFormat.format(DateTime.parse(room.lastCleaned)
+    //       .add(Duration(seconds: maxX ~/ 5 * 2))),
+    //   dateFormat.format(DateTime.parse(room.lastCleaned)
+    //       .add(Duration(seconds: maxX ~/ 5 * 3))),
+    //   dateFormat.format(DateTime.parse(room.lastCleaned)
+    //       .add(Duration(seconds: maxX ~/ 5 * 4))),
+    //   dateFormat.format(
+    //       DateTime.parse(room.lastCleaned).add(Duration(seconds: maxX))),
+    // ];
+    // final yTitles = [
+    //   minY.toInt().toString(),
+    //   (maxY / 5 * 1).toInt().toString(),
+    //   (maxY / 5 * 2).toInt().toString(),
+    //   (maxY / 5 * 3).toInt().toString(),
+    //   (maxY / 5 * 4).toInt().toString(),
+    //   maxY.toInt().toString(),
+    // ];
     activityGraphData = {
-      'maxY': maxY,
-      'minY': minY,
-      'maxX': maxX,
-      'minX': 0,
-      'xTitles': xTitles,
-      'yTitles': yTitles,
+      'lastCleaned': DateTime.parse(room.lastCleaned),
+      // 'maxY': maxY,
+      // 'minY': minY,
+      // 'maxX': maxX,
+      // 'minX': 0,
+      // 'xTitles': xTitles,
+      // 'yTitles': yTitles,
       'activityData': room.activityData,
     };
     notifyListeners();
@@ -220,9 +222,10 @@ class SingleRoomProvider extends ChangeNotifier {
     }
   }
 
-  int calculateTimestampDifference(DateTime startTime, DateTime endTime) {
-    return endTime.difference(startTime).inSeconds;
-  }
+  // Old implementation of activity graph
+  // int calculateTimestampDifference(DateTime startTime, DateTime endTime) {
+  //   return endTime.difference(startTime).inSeconds;
+  // }
 
   Uint8ClampedList _convert64to8(Uint64List array) {
     var min, max, pix;
