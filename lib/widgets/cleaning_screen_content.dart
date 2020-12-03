@@ -98,6 +98,7 @@ class _CleaningScreenContentState extends State<CleaningScreenContent>
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    print(screenSize.height);
     final hospitalsProvider =
         Provider.of<HospitalsProvider>(context, listen: false);
     final singleRoomProvider = Provider.of<SingleRoomProvider>(context);
@@ -148,7 +149,7 @@ class _CleaningScreenContentState extends State<CleaningScreenContent>
                                 fontSize: 30, fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Expanded(child: SimpleLineChart()),
+                        Expanded(child: ActivityGraph()),
                       ],
                     ),
                   ),
@@ -161,7 +162,7 @@ class _CleaningScreenContentState extends State<CleaningScreenContent>
                     child: Column(
                       children: [
                         RoomInfoTitle(),
-                        SizedBox(height: 30),
+                        screenSize.height <= 768 ? SizedBox(height: 8) : SizedBox(height: 30),
                         RoomInfoDetail(
                           roomInfoTitle: 'Hospital',
                           roomInfo: hospitalsProvider.hospitals
@@ -218,8 +219,8 @@ class _CleaningScreenContentState extends State<CleaningScreenContent>
                                   ),
                                 ),
                             )
-                            : SizedBox(height: 60),
-                        SizedBox(height: 20),
+                            :  SizedBox(height: 60),
+                        screenSize.height <= 768 ? SizedBox.shrink() : SizedBox(height: 20),
                         CustomButton(
                           title:
                               isCleaning ? 'STOP CLEANING' : 'START CLEANING',
