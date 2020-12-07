@@ -74,7 +74,7 @@ class ActivityGraph extends StatelessWidget {
                       ),
                       day: new charts.TimeFormatterSpec(
                         format: 'dd',
-                        transitionFormat: 'dd MM',
+                        transitionFormat: 'dd MMM',
                       ),
                     ),
                     renderSpec: charts.SmallTickRendererSpec(

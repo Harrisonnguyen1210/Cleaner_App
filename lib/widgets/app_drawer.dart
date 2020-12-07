@@ -42,6 +42,8 @@ class AppDrawer extends StatelessWidget {
                   _drawerItemData[index]['route'], (_) => false);
             } else if (drawerStateProvider.getCurrentDrawer == 0) {
               ErrorDialog.showErrorDialog(context, Consts.pleaseFinishCleaning);
+            } else if (drawerStateProvider.getCurrentDrawer == 2) {
+              ErrorDialog.showErrorDialog(context, Consts.pleaseFinishReport);
             }
           },
           child: Container(
@@ -93,8 +95,8 @@ class AppDrawer extends StatelessWidget {
             ..._drawerItemData
                 .asMap()
                 .entries
-                .map((mapEntry) =>
-                    _buildDrawerItem(mapEntry.key, drawerStateProvider, context))
+                .map((mapEntry) => _buildDrawerItem(
+                    mapEntry.key, drawerStateProvider, context))
                 .toList()
           ],
         ),

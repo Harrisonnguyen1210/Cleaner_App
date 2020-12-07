@@ -37,6 +37,7 @@ class _ReportScreenState extends State<ReportScreen> {
   void _navigateToOverviewScreen(BuildContext context) {
     final drawerStateProvider =
         Provider.of<DrawerStateProvider>(context, listen: false);
+    drawerStateProvider.setCanBeNavigated(true);
     drawerStateProvider.setCurrentDrawer(0);
     Consts.navigatorKey.currentState
         .pushNamedAndRemoveUntil(RouteNames.overview, (_) => false);
@@ -75,9 +76,14 @@ class _ReportScreenState extends State<ReportScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final drawerStateProvider =
+        Provider.of<DrawerStateProvider>(context, listen: false);
     final bool displayTabletLayout = MediaQuery.of(context).size.width > 500;
     final Room currentRoom = ModalRoute.of(context).settings.arguments;
     final isSmallerScreen = MediaQuery.of(context).size.width <= 1194;
+    if (currentRoom != null && drawerStateProvider.getCurrentDrawer == 2) {
+      drawerStateProvider.setCanBeNavigated(false);
+    }
 
     return Scaffold(
       appBar: CustomAppBar.getAppBar(null, context),

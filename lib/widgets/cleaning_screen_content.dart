@@ -98,7 +98,6 @@ class _CleaningScreenContentState extends State<CleaningScreenContent>
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    print(screenSize.height);
     final hospitalsProvider =
         Provider.of<HospitalsProvider>(context, listen: false);
     final singleRoomProvider = Provider.of<SingleRoomProvider>(context);

@@ -9,17 +9,34 @@ class LogoutScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar.getAppBar(null, context),
-        body: Center(
-          child: CustomButton(
-            title: 'Logout',
-            onPress: () {
-              CustomDialog.showCustomDialog(
-                context,
-                'Do you want to logout?',
-                () => Phoenix.rebirth(context),
-              );
-            },
-          ),
+        body: Stack(
+          children: [
+            Align(
+              child: CustomButton(
+                title: 'Logout',
+                onPress: () {
+                  CustomDialog.showCustomDialog(
+                    context,
+                    'Do you want to logout?',
+                    () => Phoenix.rebirth(context),
+                  );
+                },
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: MediaQuery.of(context).size.height / 7,
+                padding: EdgeInsets.only(bottom: 32.0),
+                child: Image(
+                  fit: BoxFit.contain,
+                  image: AssetImage(
+                    'assets/images/LEVITEZER_LOGO.png',
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

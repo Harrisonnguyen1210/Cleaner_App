@@ -60,7 +60,7 @@ flutter:
   assets:
     - assets/images/no_heatmap_placeholder.jpg
     - assets/images/profile_placeholder.jpg
-
+    - assets/images/LEVITEZER_LOGO.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

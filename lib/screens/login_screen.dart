@@ -37,6 +37,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final screenPadding = MediaQuery.of(context).padding;
+
     return SafeArea(
       child: Scaffold(
         body: _isLoading
@@ -45,54 +48,81 @@ class _LoginScreenState extends State<LoginScreen> {
                   valueColor: AlwaysStoppedAnimation<Color>(Consts.primaryBlue),
                 ),
               )
-            : Center(
+            : Container(
+                width: double.infinity,
                 child: SingleChildScrollView(
-                  child: Container(
-                    width: 400,
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          TextFormField(
-                            style: TextStyle(fontSize: 20),
-                            keyboardType: TextInputType.name,
-                            onSaved: (name) {
-                              _authData['name'] = name;
-                            },
-                            validator: (name) {
-                              if (name.isEmpty) {
-                                return 'Invalid name!';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              labelText: 'Cleaner\'s name',
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(25.0),
-                                borderSide: BorderSide(
-                                  color: Consts.primaryBlue,
-                                  width: 4.0,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(25.0),
-                                borderSide: BorderSide(
-                                  color: Consts.grey4,
-                                  width: 2.0,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 48,
-                          ),
-                          CustomButton(
-                            title: 'Login',
-                            onPress: () => _loginUser(context),
-                          ),
-                        ],
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: screenSize.height * 0.35,
                       ),
-                    ),
+                      Container(
+                        width: 400,
+                        height: 200,
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                style: TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.name,
+                                onSaved: (name) {
+                                  _authData['name'] = name;
+                                },
+                                validator: (name) {
+                                  if (name.isEmpty) {
+                                    return 'Invalid name!';
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  labelText: 'Cleaner\'s name',
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                    borderSide: BorderSide(
+                                      color: Consts.primaryBlue,
+                                      width: 4.0,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                    borderSide: BorderSide(
+                                      color: Consts.grey4,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 48,
+                              ),
+                              CustomButton(
+                                title: 'Login',
+                                onPress: () => _loginUser(context),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: screenSize.height -
+                            screenSize.height * 0.35 -
+                            200 -
+                            screenSize.height / 10 -
+                            screenPadding.top -
+                            screenPadding.bottom -
+                            32,
+                      ),
+                      Container(
+                        height: screenSize.height / 10,
+                        child: Image(
+                          fit: BoxFit.contain,
+                          image: AssetImage(
+                            'assets/images/LEVITEZER_LOGO.png',
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

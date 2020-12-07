@@ -30,6 +30,8 @@ class Consts {
       'No activity graph available. Not enough data.';
   static const String pleaseFinishCleaning =
       'Please finish your cleaning event';
+  static const String pleaseFinishReport =
+      'Please finish your cleaning report';
 
   //navigator key
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
