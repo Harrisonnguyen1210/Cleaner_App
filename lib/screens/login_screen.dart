@@ -54,7 +54,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: screenSize.height * 0.35,
+                        height: screenSize.height * 0.25,
+                      ),
+                      Container(
+                        height: 80.0,
+                        child: Text(
+                          'SPOTLESS',
+                          style: TextStyle(
+                            fontSize: 50,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                       Container(
                         width: 400,
@@ -106,7 +116,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       SizedBox(
                         height: screenSize.height -
-                            screenSize.height * 0.35 -
+                            screenSize.height * 0.25 -
+                            80 -
                             200 -
                             screenSize.height / 10 -
                             screenPadding.top -

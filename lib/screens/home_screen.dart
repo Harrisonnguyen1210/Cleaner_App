@@ -1,6 +1,5 @@
 import 'package:cleaner_app/consts.dart';
 import 'package:cleaner_app/route_names.dart';
-import 'package:cleaner_app/screens/cleaning_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cleaner_app/screens/screens.dart';
 import 'package:cleaner_app/widgets/widgets.dart';
@@ -44,6 +43,11 @@ class _HomeScreeenState extends State<HomeScreen> {
                   case RouteNames.report:
                     return MaterialPageRoute(
                         builder: (context) => ReportScreen(),
+                        settings: settings);
+                    break;
+                  case RouteNames.about:
+                    return MaterialPageRoute(
+                        builder: (context) => AboutScreen(),
                         settings: settings);
                     break;
                   case RouteNames.logout:

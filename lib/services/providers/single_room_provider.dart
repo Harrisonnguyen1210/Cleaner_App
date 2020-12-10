@@ -86,6 +86,7 @@ class SingleRoomProvider extends ChangeNotifier {
     } on DioError catch (error) {
       if (error.type == DioErrorType.DEFAULT && error.error is SocketException)
         throw Exception(Consts.internetError);
+      else if (error.error == "Http status error [400]") return;
       else
         throw Exception(Consts.unindentifiedError);
     } catch (error) {
@@ -95,7 +96,7 @@ class SingleRoomProvider extends ChangeNotifier {
 
   Future<void> startCleaning() async {
     if (!room.hasSensor && !room.isSimulated) throw Exception(Consts.noSuchSensor);
-    const fetchInterval = const Duration(seconds: 3);
+    const fetchInterval = const Duration(seconds: 1);
     final Dio dio = new Dio();
     final endPointUrl = '/api/room/startcleaning';
     try {

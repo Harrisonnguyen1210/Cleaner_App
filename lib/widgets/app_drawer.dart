@@ -23,7 +23,16 @@ class AppDrawer extends StatelessWidget {
       'title': 'REPORT',
       'route': RouteNames.report,
     },
-    {'icon': Icons.logout, 'title': 'LOGOUT', 'route': RouteNames.logout}
+    {
+      'icon': Icons.info_outline,
+      'title': 'ABOUT',
+      'route': RouteNames.about,
+    },
+    {
+      'icon': Icons.logout,
+      'title': 'LOGOUT',
+      'route': RouteNames.logout,
+    }
   ];
   AppDrawer({Key key, this.navigatorKey}) : super(key: key);
 

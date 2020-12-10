@@ -88,228 +88,234 @@ class _ReportScreenState extends State<ReportScreen> {
     return Scaffold(
       appBar: CustomAppBar.getAppBar(null, context),
       drawer: displayTabletLayout ? null : AppDrawer(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(isSmallerScreen ? 32.0 : 48.0),
-          child: Form(
-            key: _form,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Fill your report',
-                        style: TextStyle(
-                          fontSize: isSmallerScreen ? 40 : 50,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: isSmallerScreen ? 32.0 : 48.0),
-                      Text(
-                        'Room number:',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 16),
-                      TextFormField(
-                        initialValue:
-                            currentRoom != null ? currentRoom.name : null,
-                        style: TextStyle(fontSize: 20),
-                        decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: BorderSide(
-                              color: Consts.primaryBlue,
-                              width: 4.0,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: BorderSide(
-                              color: Consts.grey4,
-                              width: 2.0,
-                            ),
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(isSmallerScreen ? 32.0 : 48.0),
+            child: Form(
+              key: _form,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Fill your report',
+                          style: TextStyle(
+                            fontSize: isSmallerScreen ? 40 : 50,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        validator: (value) {
-                          if (value.isEmpty)
-                            return 'Please provide room number';
-                          return null;
-                        },
-                        onSaved: (value) {
-                          _report = Report(
-                            roomId: currentRoom != null
-                                ? currentRoom.id
-                                : _report.roomId,
-                            cleanerId: _report.cleanerId,
-                            comments: _report.comments,
-                            overview: _report.overview,
-                            cleanSuccessful: _report.cleanSuccessful,
-                          );
-                        },
-                      ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02),
-                      Text(
-                        'Room overview:',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 16),
-                      DropdownButtonFormField<String>(
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: BorderSide(
-                              color: Consts.grey4,
-                              width: 2.0,
-                            ),
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null) return 'Please select an overview';
-                          return null;
-                        },
-                        hint: Text('Select overview'),
-                        value: _overviewValue,
-                        items: overviewList
-                            .map((overview) => DropdownMenuItem(
-                                  value: overview,
-                                  child: Text(overview),
-                                ))
-                            .toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            _overviewValue = value;
-                          });
-                        },
-                        onSaved: (value) {
-                          _report = Report(
-                            roomId: _report.roomId,
-                            cleanerId: _report.cleanerId,
-                            comments: _report.comments,
-                            overview: value,
-                            cleanSuccessful: _report.cleanSuccessful,
-                          );
-                        },
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
-                      ),
-                      Text(
-                        'Comments:',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 16),
-                      TextFormField(
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(500),
-                        ],
-                        keyboardType: TextInputType.multiline,
-                        minLines: 5,
-                        maxLines: 10,
-                        style: TextStyle(fontSize: 20),
-                        decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: BorderSide(
-                              color: Consts.primaryBlue,
-                              width: 4.0,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: BorderSide(
-                              color: Consts.grey4,
-                              width: 2.0,
-                            ),
-                          ),
-                        ),
-                        onSaved: (value) {
-                          _report = Report(
-                            roomId: _report.roomId,
-                            cleanerId: _report.cleanerId,
-                            comments: value,
-                            overview: _report.overview,
-                            cleanSuccessful: _report.cleanSuccessful,
-                          );
-                        },
-                      ),
-                      SizedBox(height: 48),
-                      _isLoading
-                          ? Center(
-                              child: CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    Consts.primaryBlue),
-                              ),
-                            )
-                          : ButtonTheme(
-                              height: 60,
-                              minWidth: double.infinity,
-                              child: RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                child: Text(
-                                  'Submit',
-                                  style: TextStyle(
-                                    color: Consts.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                color: Consts.primaryBlue,
-                                onPressed: _submitReport,
-                              ),
-                            ),
-                    ],
-                  ),
-                ),
-                SizedBox(width: 32),
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: isSmallerScreen ? 77 : 108),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 3),
-                        child: Text(
-                          'Clean successful?',
+                        SizedBox(height: isSmallerScreen ? 32.0 : 48.0),
+                        Text(
+                          'Room number:',
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                      SizedBox(height: 13),
-                      Transform.scale(
-                        scale: 2.0,
-                        child: Checkbox(
-                          activeColor: Consts.primaryBlue,
-                          value: _checkBoxStatus,
-                          onChanged: (value) {
-                            setState(() {
-                              _checkBoxStatus = value;
-                            });
+                        SizedBox(height: 16),
+                        TextFormField(
+                          initialValue:
+                              currentRoom != null ? currentRoom.name : null,
+                          style: TextStyle(fontSize: 20),
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: BorderSide(
+                                color: Consts.primaryBlue,
+                                width: 4.0,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: BorderSide(
+                                color: Consts.grey4,
+                                width: 2.0,
+                              ),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value.isEmpty)
+                              return 'Please provide room number';
+                            return null;
+                          },
+                          onSaved: (value) {
+                            _report = Report(
+                              roomId: currentRoom != null
+                                  ? currentRoom.id
+                                  : _report.roomId,
+                              cleanerId: _report.cleanerId,
+                              comments: _report.comments,
+                              overview: _report.overview,
+                              cleanSuccessful: _report.cleanSuccessful,
+                            );
                           },
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.02),
+                        Text(
+                          'Room overview:',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: BorderSide(
+                                color: Consts.grey4,
+                                width: 2.0,
+                              ),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null)
+                              return 'Please select an overview';
+                            return null;
+                          },
+                          hint: Text('Select overview'),
+                          value: _overviewValue,
+                          items: overviewList
+                              .map((overview) => DropdownMenuItem(
+                                    value: overview,
+                                    child: Text(overview),
+                                  ))
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              _overviewValue = value;
+                            });
+                          },
+                          onSaved: (value) {
+                            _report = Report(
+                              roomId: _report.roomId,
+                              cleanerId: _report.cleanerId,
+                              comments: _report.comments,
+                              overview: value,
+                              cleanSuccessful: _report.cleanSuccessful,
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                        Text(
+                          'Comments:',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        TextFormField(
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(500),
+                          ],
+                          keyboardType: TextInputType.multiline,
+                          minLines: 5,
+                          maxLines: 10,
+                          style: TextStyle(fontSize: 20),
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: BorderSide(
+                                color: Consts.primaryBlue,
+                                width: 4.0,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: BorderSide(
+                                color: Consts.grey4,
+                                width: 2.0,
+                              ),
+                            ),
+                          ),
+                          onSaved: (value) {
+                            _report = Report(
+                              roomId: _report.roomId,
+                              cleanerId: _report.cleanerId,
+                              comments: value,
+                              overview: _report.overview,
+                              cleanSuccessful: _report.cleanSuccessful,
+                            );
+                          },
+                        ),
+                        SizedBox(height: 48),
+                        _isLoading
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      Consts.primaryBlue),
+                                ),
+                              )
+                            : ButtonTheme(
+                                height: 60,
+                                minWidth: double.infinity,
+                                child: RaisedButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  child: Text(
+                                    'Submit',
+                                    style: TextStyle(
+                                      color: Consts.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  color: Consts.primaryBlue,
+                                  onPressed: _submitReport,
+                                ),
+                              ),
+                      ],
+                    ),
                   ),
-                )
-              ],
+                  SizedBox(width: 32),
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: isSmallerScreen ? 77 : 108),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 3),
+                          child: Text(
+                            'Clean successful?',
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 13),
+                        Transform.scale(
+                          scale: 2.0,
+                          child: Checkbox(
+                            activeColor: Consts.primaryBlue,
+                            value: _checkBoxStatus,
+                            onChanged: (value) {
+                              setState(() {
+                                _checkBoxStatus = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
