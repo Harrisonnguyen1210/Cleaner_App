@@ -1,16 +1,36 @@
-# cleaner_app
+# Spotless
 
-A new Flutter project.
+A Flutter application built for hospital cleaners to have a quick access to assigned rooms, ability to start/stop cleaning events and useful UI to sunmit cleaning report. This application is mainly built in Flutter (with Dart as a programming language) and it communicates with Azure database api for updating cleaning activities.
 
-## Getting Started
+## Packages used
 
-This project is a starting point for a Flutter application.
+- provider: state management
+- dio: http client for dart
+- bitmap: manipulate image on Flutter apps (contamination map)
+- flutter_spinkit: a collection of loading indicators animated with flutter
+- flutter_phoenix: restart application state
+- intl: format datetime
+- flutter_launcher_icons: update Flutter app's launcher icon.
+- charts_flutter: line chart for activity graph
 
-A few resources to get you started if this is your first Flutter project:
+## Main features:
+- Login/Logout cleaners
+- View/Fitter assigned rooms for a specific cleaner
+- Start/Stop cleaning event
+- View contamination/cleaning map, room’s details, activity graph
+- View profile page
+- Fill cleaning event report
+- View about page
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Development setup
+
+Currently the application only support iPad tablets, so in order to install the app, Flutter needs to be installed on Mac and the application must be run on iPad simulators or iPad devices.
+
+- Install Flutter on your local machine: https://flutter.dev/docs/get-started/install
+
+## Application overview
+
+Whole demo of the app can be viewed here: https://youtu.be/_UNf1WXMzp4
+
+
